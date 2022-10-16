@@ -188,7 +188,7 @@ public class App extends PApplet {
         for (int i = 0; i < codes.length; i++)
             if (keyCode == codes[i]) {
                 wizard.setFutureMoving(true);
-                wizard.pushDirection(directions[i]);
+                wizard.setFutureDirection(directions[i]);
                 break;
             }
         if (keyCode == 32) //SPACE BAR

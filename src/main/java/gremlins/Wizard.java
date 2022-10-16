@@ -4,7 +4,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.util.List;
-import java.util.Stack;
 
 public class Wizard extends Movable {
     //Static
@@ -13,7 +12,7 @@ public class Wizard extends Movable {
     //Dynamic
     private boolean moving = false;
     private boolean futureMoving = false;
-    private Stack<Integer> directionStack = new Stack<>();
+    private int futureDirection = super.direction;
     private int speed = 2; // Can be changed by Powerup
     //Fireball Related
     private int timeInCooldown = 0;
@@ -39,7 +38,7 @@ public class Wizard extends Movable {
             //When the Player is On a Block
             if (super.y % 20 == 0 && super.x % 20 == 0) {
                 this.moving = futureMoving;
-                super.direction = popDirection();
+                super.direction = futureDirection;
                 //LOGIC
                 if (moving && super.movingIntoWall(this.direction, grid))
                     moving = false;
@@ -105,15 +104,10 @@ public class Wizard extends Movable {
         this.speed = speed;
     }
 
-    public void pushDirection(int directionChoice) {
-        this.directionStack.push(directionChoice);
+    public void setFutureDirection(int directionChoice) {
+        this.futureDirection = directionChoice;
     }
 
-    private int popDirection() {
-        if (!this.directionStack.isEmpty())
-            return this.directionStack.pop();
-        return super.direction;
-    }
 
     public void setFutureMoving(boolean futureMoving) {
         this.futureMoving = futureMoving;
