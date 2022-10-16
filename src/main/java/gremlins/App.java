@@ -112,14 +112,15 @@ public class App extends PApplet {
     private void readLevelFile(String levelName) {
         File fileName = new File(levelName);
         try {
-            Scanner scanner = new Scanner(fileName);
-            String[][] configArray = new String[33][36];
-            int y = 0;
-            while (scanner.hasNextLine()) {
-                configArray[y] = scanner.nextLine().split("");
-                y += 1;
+            try (Scanner scanner = new Scanner(fileName)) {
+                String[][] configArray = new String[33][36];
+                int y = 0;
+                while (scanner.hasNextLine()) {
+                    configArray[y] = scanner.nextLine().split("");
+                    y += 1;
+                }
+                this.tileLetterConfiguration = configArray;
             }
-            this.tileLetterConfiguration = configArray;
         } catch (Exception e) {
             System.out.println("Incorrect config file");
         }
@@ -198,7 +199,12 @@ public class App extends PApplet {
      * Receive key released signal from the keyboard.
      */
     public void keyReleased(){
-        wizard.setFutureMoving(false);
+        int[] codes = {LEFT, RIGHT, UP, DOWN};
+        for (int code : codes)
+            if (keyCode == code) {
+                wizard.setFutureMoving(false);
+                break;
+            }
     }
 
 
