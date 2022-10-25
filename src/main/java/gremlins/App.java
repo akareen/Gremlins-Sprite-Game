@@ -9,17 +9,17 @@ import java.io.*;
 
 public class App extends PApplet {
     //Final Size Values
-    public static final int WIDTH = 720;
-    public static final int HEIGHT = 720;
-    public static final int FPS = 60;
+    protected static final int WIDTH = 720;
+    protected static final int HEIGHT = 720;
+    private static final int FPS = 60;
 
     //Loaded data from the config file
-    public String configPath;
-    Map<Integer, Map<String, String>> levelsMap;
+    private final String configPath;
+    private Map<Integer, Map<String, String>> levelsMap;
 
     /* FOR ALL LEVELS */
-    private int totalNumLevels;
-    private int levelNum = 1;
+    protected int totalNumLevels;
+    int levelNum = 1;
 
     /* FOR THE CURRENT LEVEL */
     //Static
@@ -27,16 +27,19 @@ public class App extends PApplet {
     private String[][] tileLetterConfiguration;
     private Map<String, List<Integer[]>> assetLocations;
     private int[] exitLocation;
+    protected final int totalTimeFrozen = 6 * 60;
+
     //Dynamic
-    public int lives;
-    public Wizard wizard;
-    public List<Gremlin> gremlins;
-    public List<SlimeBall> slimeBalls;
-    public List<FireBall> fireBalls;
-    public List<PowerUpTile> powerupTiles;
+    protected int lives;
+    protected Wizard wizard;
+    protected List<Gremlin> gremlins;
+    protected List<SlimeBall> slimeBalls;
+    protected List<FireBall> fireBalls;
+    protected List<PowerUpTile> powerupTiles;
+    protected int currentTimeFrozen = 0;
 
     private double wizardCooldown, enemyCooldown;
-    TileGrid grid;
+    protected TileGrid grid;
 
 
     public App() {
@@ -63,8 +66,8 @@ public class App extends PApplet {
 
     private void loadImages() {
         String[] imageNames = {"brickwall",  "brickwall_destroyed0", "brickwall_destroyed1", "brickwall_destroyed2",
-                "brickwall_destroyed3", "door", "fireball", "gremlin", "powerup", "slime", "stonewall", "wizard0",
-                "wizard1", "wizard2", "wizard3"
+                "brickwall_destroyed3", "door", "fireball", "frozenwall", "gremlin", "powerup", "slime", "stonewall", 
+                "wizard0", "wizard1", "wizard2", "wizard3"
         };
         for (String name : imageNames)
             ObjectMaker.addToImageMap(name, loadImage(Objects.requireNonNull(
@@ -82,11 +85,12 @@ public class App extends PApplet {
         for (int i = 0; i < levels.size(); i++) {
             JSONObject level = (JSONObject) levels.get(i);
             Map<String, String> map = new HashMap<>();
+            
             map.put("layout", (String) level.get("layout"));
             map.put("wizard_cooldown", "" + level.get("wizard_cooldown"));
             map.put("enemy_cooldown", "" + level.get("enemy_cooldown"));
+            
             levelsMap.put(i + 1, map);
-            System.out.println(map);
         }
         this.levelsMap = levelsMap;
         this.totalNumLevels = levelsMap.size();
@@ -103,10 +107,8 @@ public class App extends PApplet {
 
     private void setValuesFromMap(int levelNum) {
         this.layoutFile = this.levelsMap.get(levelNum).get("layout");
-        this.wizardCooldown = Double.parseDouble(
-                this.levelsMap.get(levelNum).get("wizard_cooldown"));
-        this.enemyCooldown = Double.parseDouble(
-                this.levelsMap.get(levelNum).get("enemy_cooldown"));
+        this.wizardCooldown = Double.parseDouble(this.levelsMap.get(levelNum).get("wizard_cooldown"));
+        this.enemyCooldown = Double.parseDouble(this.levelsMap.get(levelNum).get("enemy_cooldown"));
     }
 
     private void readLevelFile(String levelName) {
@@ -128,8 +130,8 @@ public class App extends PApplet {
 
     private void createAssetLocations(String[][] configFile) {
         this.assetLocations = makeDefaultAssetLocations();
-        String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Powerup"};
-        String[] codes = {"W", "B", "X", "G", "E", "P"};
+        String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Powerup", "Frozenwall"};
+        String[] codes = {"W", "B", "X", "G", "E", "P", "F"};
         this.grid = new TileGrid();
         for (int y = 0; y < configFile.length; y++)
             for (int x = 0; x < configFile[y].length; x++) {
@@ -143,7 +145,7 @@ public class App extends PApplet {
                 }
     }
 
-    private void loadObjects() {
+    protected void loadObjects() {
         //Make Slimeballs
         this.slimeBalls = new ArrayList<>();
         this.fireBalls   = new ArrayList<>();
@@ -164,6 +166,11 @@ public class App extends PApplet {
         for (Integer[] ls : assetLocations.get("Stonewall"))
             this.grid.setTile(ls[0], ls[1], ObjectMaker.makeStonewall(
                     ls[0] * 20, ls[1] * 20));
+        //Make Frozenwalls
+        for (Integer[] ls : assetLocations.get("Frozenwall"))
+            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeFrozenwall(
+                    ls[0] * 20, ls[1] * 20));
+
         // Make Powerup
         this.powerupTiles = new ArrayList<>();
         for (Integer[] ls : assetLocations.get("Powerup")) {
@@ -213,19 +220,19 @@ public class App extends PApplet {
      */
     public void draw() {
         if (this.levelNum > totalNumLevels)
-            drawVictory();
+            Draw.drawVictory(this);
         else if (this.lives <= 0)
-            drawGameOver();
+            Draw.drawGameOver(this);
         else {
-            drawBackground();
+            Draw.drawBackground(this);
             evaluatePowerups();
-            drawTiles();
-            drawWizard();
-            drawGremlins();
-            drawSlimeBalls();
-            drawFireBalls();
-            drawTextField();
-            drawManaBar();
+            Draw.drawTiles(this);
+            Draw.drawWizard(this);
+            Draw.drawGremlins(this);
+            Draw.drawSlimeBalls(this);
+            Draw.drawFireBalls(this);
+            Draw.drawTextField(this);
+            Draw.drawManaBar(this);
             if (checkWin()) {
                 this.levelNum++;
                 if (this.levelNum <= totalNumLevels)
@@ -234,11 +241,6 @@ public class App extends PApplet {
         }
     }
 
-    /* Helper Methods for Draw */
-    private void drawBackground() {
-        fill(191, 153, 114);
-        this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
-    }
 
     private void evaluatePowerups() {
         for (PowerUpTile powerup : this.powerupTiles) {
@@ -249,65 +251,9 @@ public class App extends PApplet {
         }
     }
 
-    private void drawTiles() {
-        for (int y = 0; y < this.grid.getTileGrid().length; y++) {
-            for (int x = 0; x < this.grid.getTileGrid()[y].length; x++) {
-                Tile tile = this.grid.getTile(y, x);
-                tile.tick();
-                if (!(tile.isEmpty())
-                        && tile.getName().equals("destroyed-wall")) {
-                    if (tile.isFullyDestroyed())
-                        this.grid.setTile(y, x, new EmptyTile(y, x, "empty"));
-                    else
-                        tile.draw(this);
-                }
-                else if (!tile.isEmpty())
-                    tile.draw(this);
-            }
-        }
-    }
 
-    private void drawWizard() {
-        wizard.tick(this.grid, fireBalls);
-        wizard.draw(this);
-    }
 
-    private void drawGremlins() {
-        for (Gremlin gremlin : this.gremlins) {
-            gremlin.tick(this.grid, slimeBalls, fireBalls, wizard);
-            gremlin.draw(this);
-            if (Helper.collisionDetector(
-                    gremlin.getCoords(), wizard.getCoords())) {
-                this.lives--;
-                loadObjects();
-                break;
-            }
-        }
-    }
-
-    private void drawSlimeBalls() {
-        List<SlimeBall> toRemove = new ArrayList<>();
-        for (SlimeBall slimeBall : this.slimeBalls) {
-            for (int i = 0; i < slimeBall.getSPEED(); i++) {
-                if (fireSlimeCollision(slimeBall))
-                    toRemove.add(slimeBall);
-                if (slimeBall.tick(this.grid)) {
-                    toRemove.add(slimeBall);
-                    break;
-                }
-                slimeBall.draw(this);
-                if (Helper.collisionDetector(slimeBall.getCoords(), wizard.getCoords())) {
-                    this.lives--;
-                    loadObjects();
-                    return;
-                }
-            }
-        }
-        for (SlimeBall item : toRemove)
-            this.slimeBalls.remove(item);
-    }
-
-    private boolean fireSlimeCollision(SlimeBall slime) {
+    boolean fireSlimeCollision(SlimeBall slime) {
         boolean collision = false;
         List<FireBall> toRemove = new ArrayList<>();
         for (FireBall fireBall : this.fireBalls)
@@ -321,45 +267,6 @@ public class App extends PApplet {
         return collision;
     }
 
-    private void drawFireBalls() {
-        List<FireBall> toRemove = new ArrayList<>();
-        for (FireBall fireBall : this.fireBalls) {
-            for (int i = 0; i < fireBall.getSPEED(); i++) {
-                if (fireBall.tick(this.grid)) {
-                    toRemove.add(fireBall);
-                    break;
-                }
-                fireBall.draw(this);
-            }
-        }
-        for (FireBall item : toRemove)
-            this.fireBalls.remove(item);
-
-    }
-
-    private void drawTextField() {
-        Text.drawLives(this, ObjectMaker.getImage("wizard1"), this.lives);
-        Text.drawLevel(this, levelNum, totalNumLevels);
-    }
-
-    private void drawManaBar() {
-        if (wizard.isOnCooldown())
-            Text.drawManaBar(this, wizard.getCooldownFrames(), wizard.getTimeInCooldown());
-    }
-
-    //FIX UP
-    private void drawVictory() {
-        fill(0, 0, 0);
-        this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
-        Text.drawVictoryMessage(this);
-    }
-
-    private void drawGameOver() {
-        fill(0, 0, 0);
-        this.rect(-1, -1, WIDTH + 2, HEIGHT + 2);
-        Text.drawGameOverMessage(this);
-    }
-
 
     private boolean checkWin() {
         return Helper.collisionDetector(wizard.getCoords(),
@@ -369,12 +276,24 @@ public class App extends PApplet {
 
     private static Map<String, List<Integer[]>> makeDefaultAssetLocations() {
         String[] ls = {"Wizard", "Brickwall", "Stonewall",
-                "Gremlin", "Door", "Empty", "Powerup"
+                "Gremlin", "Door", "Empty", "Powerup", "Frozenwall"
         };
         Map<String, List<Integer[]>> map = new HashMap<>();
         for (String s : ls)
             map.put(s, new ArrayList<>());
         return map;
+    }
+
+    void unFreezeGremlins() {
+        this.currentTimeFrozen = 0;
+        for (Gremlin gremlin : this.gremlins)
+            gremlin.setMoving(true);
+    }
+
+    void freezeGremlins() {
+        this.currentTimeFrozen = 1;
+        for (Gremlin gremlin : this.gremlins)
+            gremlin.setMoving(false);
     }
 
 

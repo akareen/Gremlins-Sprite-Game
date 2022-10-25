@@ -17,16 +17,14 @@ public class TileGrid {
 
     public Integer[] respawnLocation(int playerY, int playerX) {
         List<Integer[]> vacant = vacantPositionsAwayFromPlayer(playerY, playerX);
-        Random random = new Random();
-        return vacant.get(random.nextInt(vacant.size()));
+        return vacant.get(new Random().nextInt(vacant.size()));
     }
 
     private List<Integer[]> vacantPositionsAwayFromPlayer(int playerY, int playerX) {
         List<Integer[]> vacant = new ArrayList<>();
         for (int y = 0; y < this.tileGrid.length; y++)
             for (int x = 0; x < this.tileGrid[y].length; x++)
-                if (!withinTenSpaces(y, x, playerY, playerX)
-                        && tileGrid[y][x].isEmpty())
+                if (!withinTenSpaces(y, x, playerY, playerX) && tileGrid[y][x].isEmpty())
                     vacant.add(new Integer[] {y, x});
         return vacant;
     }

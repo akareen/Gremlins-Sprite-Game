@@ -12,7 +12,7 @@ public class Wizard extends Movable {
     //Dynamic
     private boolean moving = false;
     private boolean futureMoving = false;
-    private int futureDirection = super.direction;
+    private int futureDirection;
     private int speed = 2; // Can be changed by Powerup
     //Fireball Related
     private int timeInCooldown = 0;
@@ -21,10 +21,10 @@ public class Wizard extends Movable {
 
 
     public Wizard(int y, int x, double cooldownDouble, PImage[] spriteArray) {
-        super(y, x);
-        super.direction = 3;
+        super(y, x, 3);
         this.cooldownFrames = (int) (cooldownDouble * 60);
         this.spriteArray = spriteArray;
+        futureDirection = super.direction;
     }
 
     // Executed every frame
@@ -43,7 +43,8 @@ public class Wizard extends Movable {
                 if (moving && super.movingIntoWall(this.direction, grid))
                     moving = false;
             }
-            changePosition();
+            if (moving)
+                super.changePosition();
         }
     }
 
@@ -51,14 +52,6 @@ public class Wizard extends Movable {
         app.image(spriteArray[this.direction], super.x, super.y);
     }
 
-    // MOVEMENT METHODS
-    // Moves the Wizard by one pixel if the movement is active
-    protected void changePosition() {
-        if (moving) {
-            super.y += super.movementModifiers[super.direction][0];
-            super.x += super.movementModifiers[super.direction][1];
-        }
-    }
 
     // SHOOTING METHODS
     public void initiateShoot() {
@@ -80,8 +73,7 @@ public class Wizard extends Movable {
     // adding to the fireBalls list
     private void shootFireball(List<FireBall> fireBalls) {
         if (this.shooting && !this.onCooldown) {
-            fireBalls.add(
-                    ObjectMaker.makeFireBall(super.y, super.x, this.direction));
+            fireBalls.add(ObjectMaker.makeFireBall(super.y, super.x, this.direction));
             this.onCooldown = true;
         }
         this.shooting = false;
@@ -108,12 +100,8 @@ public class Wizard extends Movable {
         this.futureDirection = directionChoice;
     }
 
-
     public void setFutureMoving(boolean futureMoving) {
         this.futureMoving = futureMoving;
     }
 
-//    public void setFutureDirection(int futureDirection) {
-//        this.futureDirection = futureDirection;
-//    }
 }

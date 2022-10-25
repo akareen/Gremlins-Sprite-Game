@@ -14,4 +14,14 @@ public interface Helper {
         return  (y2 >= y1 && y2 <= (y1 + BLOCK_MODIFIER)) &&
                 (x2 >= x1 && x2 <= (x1 + BLOCK_MODIFIER));
     }
+
+    // Turns North to South, East to West etc. Used to see same direction it came
+    static int oppositeDirection(int direction) {
+        int[] dir = {0, 1, 2, 3};
+        int[] opp = {1, 0, 3, 2};
+        for (int i = 0; i < dir.length; i++)
+            if (dir[i] == direction)
+                return opp[i];
+        return 0;
+    }
 }

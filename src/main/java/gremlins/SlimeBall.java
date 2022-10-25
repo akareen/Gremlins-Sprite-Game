@@ -8,7 +8,6 @@ public class SlimeBall extends MovingBall {
 
     public SlimeBall(int y, int x, int direction, PImage sprite) {
         super(y, x, direction);
-        this.direction = direction;
         this.sprite = sprite;
     }
 

@@ -23,7 +23,6 @@ public class Text {
 
     }
 
-
     public static void drawLevel(PApplet app, int currentLevel, int totalLevels) {
         String output = String.format("Level %d/%d\n", currentLevel, totalLevels);
         PFont mono;

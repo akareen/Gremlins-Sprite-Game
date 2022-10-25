@@ -3,7 +3,8 @@ package gremlins;
 import processing.core.PApplet;
 
 public class Tile {
-    private int y; private int x;
+    private int y;
+    private int x;
     private final String name;
     private boolean empty = false;
 

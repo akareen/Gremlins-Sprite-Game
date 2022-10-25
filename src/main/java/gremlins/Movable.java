@@ -2,7 +2,7 @@ package gremlins;
 
 public class Movable {
     protected int y; protected int x;
-    protected int direction = 1;  //0 = West, 1 = East, 2, = North, 3 = South
+    protected int direction;  //0 = West, 1 = East, 2, = North, 3 = South
     protected int[][] movementModifiers = {
             {0, -1}, // West
             {0,  1}, // East
@@ -10,9 +10,10 @@ public class Movable {
             {1,  0}  // South
     };
 
-    public Movable(int y, int x) {
+    public Movable(int y, int x, int direction) {
         this.y = y;
         this.x = x;
+        this.direction = direction;
     }
 
     // Get and return the tile that the movable object is moving into with the current direction
@@ -31,8 +32,7 @@ public class Movable {
     // Returns true if moving into a brick or stonewall
     public boolean movingIntoWall(int direction, TileGrid grid) {
         Tile futureTile = this.getFutureTile(direction, grid);
-        return futureTile.getName().equals("brickwall")
-                || futureTile.getName().equals("stonewall");
+        return futureTile.getName().equals("brickwall") || futureTile.getName().equals("stonewall");
     }
 
     public int[] getCoords() {
