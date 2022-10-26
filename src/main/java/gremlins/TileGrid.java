@@ -29,7 +29,7 @@ public class TileGrid {
         return vacant;
     }
 
-    private boolean withinTenSpaces(int y, int x, int y1, int x1) {
+    protected boolean withinTenSpaces(int y, int x, int y1, int x1) {
         return (Math.abs(y - y1) + Math.abs(x - x1)) <= 10;
     }
 
@@ -38,8 +38,12 @@ public class TileGrid {
     }
 
     // GETTERS AND SETTERS
-    public Tile[][] getTileGrid() {
-        return tileGrid;
+    public int getYLength() {
+        return this.tileGrid.length;
+    }
+
+    public int getXLength() {
+        return this.tileGrid[0].length;
     }
 
     public Tile getTile(int y, int x) {

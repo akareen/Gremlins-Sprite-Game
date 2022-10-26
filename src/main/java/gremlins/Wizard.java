@@ -8,16 +8,16 @@ import java.util.List;
 public class Wizard extends Movable {
     //Static
     private final PImage[] spriteArray;
-    private final int cooldownFrames;
+    protected int cooldownFrames;
     //Dynamic
     private boolean moving = false;
-    private boolean futureMoving = false;
-    private int futureDirection;
-    private int speed = 2; // Can be changed by Powerup
+    protected boolean futureMoving = false;
+    protected int futureDirection;
+    protected int speed = 2; // Can be changed by Powerup
     //Fireball Related
-    private int timeInCooldown = 0;
-    private boolean onCooldown = false;
-    private boolean shooting = false;
+    protected int timeInCooldown = 0;
+    protected boolean onCooldown = false;
+    protected boolean shooting = false;
 
 
     public Wizard(int y, int x, double cooldownDouble, PImage[] spriteArray) {
@@ -40,7 +40,7 @@ public class Wizard extends Movable {
                 this.moving = futureMoving;
                 super.direction = futureDirection;
                 //LOGIC
-                if (moving && super.movingIntoWall(this.direction, grid))
+                if (moving && super.movingIntoWall(grid))
                     moving = false;
             }
             if (moving)
@@ -60,23 +60,24 @@ public class Wizard extends Movable {
 
     // If the Wizard is on cooldown increments its timer, if it has spent
     // required time in cooldown takes it off cooldown
-    private void updateCooldowns() {
-        if (this.onCooldown)
+    protected void updateCooldowns() {
+        if (this.onCooldown) {
             this.timeInCooldown++;
-        if (this.timeInCooldown >= cooldownFrames) {
-            this.timeInCooldown = 0;
-            this.onCooldown = false;
+            if (this.timeInCooldown >= cooldownFrames) {
+                this.timeInCooldown = 0;
+                this.onCooldown = false;
+            }
         }
     }
 
     // If able to shoots then it shoots a fireball from the wizard by
     // adding to the fireBalls list
-    private void shootFireball(List<FireBall> fireBalls) {
+    protected void shootFireball(List<FireBall> fireBalls) {
         if (this.shooting && !this.onCooldown) {
             fireBalls.add(ObjectMaker.makeFireBall(super.y, super.x, this.direction));
             this.onCooldown = true;
+            this.shooting = false;
         }
-        this.shooting = false;
     }
 
     // GETTERS AND SETTERS

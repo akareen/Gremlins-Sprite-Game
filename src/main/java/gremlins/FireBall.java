@@ -64,4 +64,12 @@ public class FireBall extends MovingBall {
     private int getXPos() {
         return (super.x / 20) + super.movementModifiers[super.direction][1];
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof FireBall))
+            return false;
+        FireBall f = (FireBall) o;
+        return f.y == this.y && f.x == this.x && f.direction == this.direction;
+    }
 }

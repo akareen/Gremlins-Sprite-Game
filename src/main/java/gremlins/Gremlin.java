@@ -43,7 +43,7 @@ public class Gremlin extends Movable {
 
     //Changes the movement of the gremlin if it is moving into a wall
     private void modifyMovement(TileGrid grid) {
-        if (super.movingIntoWall(this.direction, grid))
+        if (super.movingIntoWall(grid))
             super.direction = newDirection(grid);
     }
 

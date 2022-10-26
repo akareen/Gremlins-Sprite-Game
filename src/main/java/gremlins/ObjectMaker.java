@@ -8,6 +8,7 @@ import java.util.Map;
 public class ObjectMaker {
     public static Map<String, PImage> spritesMap = new HashMap<>();
 
+
     /* Image Map Methods */
     public static void addToImageMap(String name, PImage image) {
         spritesMap.put(name, image);

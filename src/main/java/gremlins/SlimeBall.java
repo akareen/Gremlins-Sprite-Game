@@ -14,7 +14,7 @@ public class SlimeBall extends MovingBall {
 
     public boolean tick(TileGrid grid) {
         if (super.y % 20 == 0 && super.x % 20 == 0)
-            if (super.movingIntoWall(this.direction, grid))
+            if (super.movingIntoWall(grid))
                 return true;
         changePosition();
         return false;

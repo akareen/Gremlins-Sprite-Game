@@ -5,8 +5,8 @@ import processing.core.PImage;
 
 public class DestroyedWall extends Tile {
     private final PImage[] sprites;
-    int spriteNumber = -1;
-    private boolean fullyDestroyed = false;
+    protected int spriteNumber = -1;
+    protected boolean fullyDestroyed = false;
 
     public DestroyedWall(int y, int x, String name, PImage[] sprites) {
         super(y, x, name);

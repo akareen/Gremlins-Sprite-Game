@@ -25,8 +25,8 @@ public interface Draw {
 
 
     static void drawTiles(App app) {
-        for (int y = 0; y < app.grid.getTileGrid().length; y++) {
-            for (int x = 0; x < app.grid.getTileGrid()[y].length; x++) {
+        for (int y = 0; y < app.grid.getYLength(); y++) {
+            for (int x = 0; x < app.grid.getXLength(); x++) {
                 Tile tile = app.grid.getTile(y, x);
                 tile.tick();
                 if (!(tile.isEmpty())
