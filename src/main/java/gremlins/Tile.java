@@ -54,4 +54,13 @@ public class Tile {
     public void setEmpty(boolean empty) {
         this.empty = empty;
     }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Tile))
+            return false;
+        Tile tile = (Tile) o;
+        return tile.name.equals(this.name)
+                && tile.y == this.y
+                && tile.x == this.x;
+    }
 }

@@ -3,7 +3,7 @@ package gremlins;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DestrotedWallTest {
+public class DestroyedWallTest {
     DestroyedWall wall = ObjectMaker.makeDestroyedWall(10,10);
 
     @Test

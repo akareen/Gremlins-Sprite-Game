@@ -20,7 +20,7 @@ public class TileGrid {
         return vacant.get(new Random().nextInt(vacant.size()));
     }
 
-    private List<Integer[]> vacantPositionsAwayFromPlayer(int playerY, int playerX) {
+    protected List<Integer[]> vacantPositionsAwayFromPlayer(int playerY, int playerX) {
         List<Integer[]> vacant = new ArrayList<>();
         for (int y = 0; y < this.tileGrid.length; y++)
             for (int x = 0; x < this.tileGrid[y].length; x++)
@@ -53,4 +53,5 @@ public class TileGrid {
     public void setTile(int y, int x, Tile obj) {
         this.tileGrid[y][x] = obj;
     }
+
 }

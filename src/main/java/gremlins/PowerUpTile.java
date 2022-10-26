@@ -6,13 +6,13 @@ import processing.core.PImage;
 public class PowerUpTile extends Tile {
     // Static
     private final PImage image;
-    private final int RESPAWN_TIME_FRAMES = 7 * 60;
-    private final int POWERUP_LENGTH = 7 * 60;
+    protected final int RESPAWN_TIME_FRAMES = 7 * 60;
+    protected final int POWERUP_LENGTH = 7 * 60;
     // Dynamic
-    private int timeToActivation = 0;
-    private int timeToDeactivation = 0;
-    private boolean powerupActive = false;
-    private Wizard wizRef;
+    protected int timeToActivation = 0;
+    protected int timeToDeactivation = 0;
+    protected boolean powerupActive = false;
+    protected Wizard wizRef;
 
 
     public PowerUpTile(int y, int x, String name, PImage image) {

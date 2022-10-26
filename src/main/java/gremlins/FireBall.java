@@ -27,7 +27,7 @@ public class FireBall extends MovingBall {
     }
 
     // Returns true if the fireball is moving into a stone wall
-    private int evaluateMovement(TileGrid grid) {
+    protected int evaluateMovement(TileGrid grid) {
         if (isMovingIntoFrozenWall(grid))
             return 2;
         if (isMovingIntoBrickWall(grid) || isMovingIntoStoneWall(grid))
@@ -35,7 +35,7 @@ public class FireBall extends MovingBall {
         return 0;
     }
 
-    private boolean isMovingIntoBrickWall(TileGrid grid) {
+    protected boolean isMovingIntoBrickWall(TileGrid grid) {
         if (grid.getTile(getYPos(), getXPos()).getName().equals("brickwall")) {
             grid.setTile(getYPos(), getXPos(),
                     ObjectMaker.makeDestroyedWall(getYPos() * 20, getXPos() * 20));
@@ -44,11 +44,11 @@ public class FireBall extends MovingBall {
         return false;
     }
 
-    private boolean isMovingIntoStoneWall(TileGrid grid) {
+    protected boolean isMovingIntoStoneWall(TileGrid grid) {
         return grid.getTile(getYPos(), getXPos()).getName().equals("stonewall");
     }
 
-    private boolean isMovingIntoFrozenWall(TileGrid grid) {
+    protected boolean isMovingIntoFrozenWall(TileGrid grid) {
         if (grid.getTile(getYPos(), getXPos()).getName().equals("frozenwall")) {
             grid.setTile(getYPos(), getXPos(),
                     ObjectMaker.makeDestroyedWall(getYPos() * 20, getXPos() * 20));
@@ -57,11 +57,11 @@ public class FireBall extends MovingBall {
         return false;
     }
 
-    private int getYPos() {
+    protected int getYPos() {
         return (super.y / 20) + super.movementModifiers[super.direction][0];
     }
 
-    private int getXPos() {
+    protected int getXPos() {
         return (super.x / 20) + super.movementModifiers[super.direction][1];
     }
 
