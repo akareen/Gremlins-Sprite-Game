@@ -27,8 +27,7 @@ public class ObjectMaker {
         return new Wall(y, x, "stonewall", spritesMap.get("stonewall"));
     }
 
-    public static Wall makeFrozenwall(int y, int x) {
-        return new Wall(y, x, "frozenwall", spritesMap.get("frozenwall"));
+    public static Wall makeFrozenwall(int y, int x) {return new Wall(y, x, "frozenwall", spritesMap.get("frozenwall"));
     }
 
     public static EmptyTile makeEmptyTile(int y, int x){
@@ -41,10 +40,8 @@ public class ObjectMaker {
 
     public static DestroyedWall makeDestroyedWall(int y, int x) {
         return new DestroyedWall(y, x, "destroyed-wall", new PImage[] {
-                spritesMap.get("brickwall_destroyed0"),
-                spritesMap.get("brickwall_destroyed1"),
-                spritesMap.get("brickwall_destroyed2"),
-                spritesMap.get("brickwall_destroyed3")});
+                spritesMap.get("brickwall_destroyed0"), spritesMap.get("brickwall_destroyed1"),
+                spritesMap.get("brickwall_destroyed2"), spritesMap.get("brickwall_destroyed3")});
     }
 
     public static PowerUpTile makePowerUpTile(int y, int x) {

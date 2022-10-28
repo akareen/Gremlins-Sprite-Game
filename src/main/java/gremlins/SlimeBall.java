@@ -24,4 +24,10 @@ public class SlimeBall extends MovingBall {
         app.image(this.sprite, super.x, super.y);
     }
 
+    @Override
+    public boolean equals(MovingBall o) {
+        if (!(o instanceof SlimeBall))
+            return false;
+        return o.y == this.y && o.x == this.x && o.direction == this.direction;
+    }
 }

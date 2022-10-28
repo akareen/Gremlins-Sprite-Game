@@ -56,8 +56,7 @@ public interface Draw {
         for (Gremlin gremlin : app.gremlins) {
             gremlin.tick(app.grid, app.slimeBalls, app.fireBalls, app.wizard);
             gremlin.draw(app);
-            if (Helper.collisionDetector(
-                    gremlin.getCoords(), app.wizard.getCoords())) {
+            if (Helper.collisionDetector(gremlin.getCoords(), app.wizard.getCoords())) {
                 app.lives--;
                 app.loadObjects();
                 break;

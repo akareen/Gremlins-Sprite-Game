@@ -1,7 +1,8 @@
 package gremlins;
 
 public class Movable {
-    protected int y; protected int x;
+    protected int y;
+    protected int x;
     protected int direction;  //0 = West, 1 = East, 2, = North, 3 = South
     protected int[][] movementModifiers = {
             {0, -1}, // West

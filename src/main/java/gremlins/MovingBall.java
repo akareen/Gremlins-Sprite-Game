@@ -1,6 +1,6 @@
 package gremlins;
 
-public class MovingBall extends Movable {
+public abstract class MovingBall extends Movable {
     int direction;
     final int SPEED = 4;
 
@@ -12,4 +12,5 @@ public class MovingBall extends Movable {
         return this.SPEED;
     }
 
+    public abstract boolean equals(MovingBall o);
 }

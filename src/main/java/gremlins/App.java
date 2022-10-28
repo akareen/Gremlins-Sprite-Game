@@ -19,14 +19,14 @@ public class App extends PApplet {
 
     /* FOR ALL LEVELS */
     protected int totalNumLevels;
-    int levelNum = 1;
+    protected int levelNum = 1;
 
     /* FOR THE CURRENT LEVEL */
     //Static
-    private String layoutFile;
-    private String[][] tileLetterConfiguration;
-    private Map<String, List<Integer[]>> assetLocations;
-    private int[] exitLocation;
+    protected String layoutFile;
+    protected String[][] tileLetterConfiguration;
+    protected Map<String, List<Integer[]>> assetLocations;
+    protected int[] exitLocation;
     protected final int totalTimeFrozen = 6 * 60;
 
     //Dynamic
@@ -38,7 +38,7 @@ public class App extends PApplet {
     protected List<PowerUpTile> powerupTiles;
     protected int currentTimeFrozen = 0;
 
-    private double wizardCooldown, enemyCooldown;
+    protected double wizardCooldown, enemyCooldown;
     protected TileGrid grid;
 
 
@@ -151,38 +151,31 @@ public class App extends PApplet {
         this.fireBalls   = new ArrayList<>();
         //Make Wizard
         Integer[] wizardCoords = assetLocations.get("Wizard").get(0);
-        this.wizard = ObjectMaker.makeWizard(
-                wizardCoords[0] * 20, wizardCoords[1] * 20, wizardCooldown);
+        this.wizard = ObjectMaker.makeWizard(wizardCoords[0] * 20, wizardCoords[1] * 20, wizardCooldown);
         //Make Gremlins
         this.gremlins = new ArrayList<>();
         for (Integer[] ls : assetLocations.get("Gremlin"))
-            this.gremlins.add(ObjectMaker.makeGremlin(
-                    ls[0] * 20, ls[1] * 20, enemyCooldown));
+            this.gremlins.add(ObjectMaker.makeGremlin(ls[0] * 20, ls[1] * 20, enemyCooldown));
         //Make BrickWalls
         for (Integer[] ls : assetLocations.get("Brickwall"))
-            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeBrickwall(
-                    ls[0] * 20, ls[1] * 20));
+            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeBrickwall(ls[0] * 20, ls[1] * 20));
         //Make StoneWalls
         for (Integer[] ls : assetLocations.get("Stonewall"))
-            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeStonewall(
-                    ls[0] * 20, ls[1] * 20));
+            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeStonewall(ls[0] * 20, ls[1] * 20));
         //Make Frozenwalls
         for (Integer[] ls : assetLocations.get("Frozenwall"))
-            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeFrozenwall(
-                    ls[0] * 20, ls[1] * 20));
+            this.grid.setTile(ls[0], ls[1], ObjectMaker.makeFrozenwall(ls[0] * 20, ls[1] * 20));
 
         // Make Powerup
         this.powerupTiles = new ArrayList<>();
         for (Integer[] ls : assetLocations.get("Powerup")) {
-            PowerUpTile powerup = ObjectMaker.makePowerUpTile(
-                    ls[0] * 20, ls[1] * 20);
+            PowerUpTile powerup = ObjectMaker.makePowerUpTile(ls[0] * 20, ls[1] * 20);
             this.powerupTiles.add(powerup);
             this.grid.setTile(ls[0], ls[1], powerup);
         }
         //Make Door
         Integer[] ls = assetLocations.get("Door").get(0);
-        this.grid.setTile(ls[0], ls[1], ObjectMaker.makeDoor(
-                ls[0] * 20, ls[1] * 20));
+        this.grid.setTile(ls[0], ls[1], ObjectMaker.makeDoor(ls[0] * 20, ls[1] * 20));
     }
 
 
@@ -257,8 +250,7 @@ public class App extends PApplet {
         boolean collision = false;
         List<FireBall> toRemove = new ArrayList<>();
         for (FireBall fireBall : this.fireBalls)
-            if (Helper.collisionDetector(
-                    fireBall.getCoords(), slime.getCoords())) {
+            if (Helper.collisionDetector(fireBall.getCoords(), slime.getCoords())) {
                 toRemove.add(fireBall);
                 collision = true;
             }
@@ -269,15 +261,12 @@ public class App extends PApplet {
 
 
     private boolean checkWin() {
-        return Helper.collisionDetector(wizard.getCoords(),
-                grid.getTile(exitLocation[0], exitLocation[1]).getCoords());
+        return Helper.collisionDetector(wizard.getCoords(), grid.getTile(exitLocation[0], exitLocation[1]).getCoords());
     }
 
 
     private static Map<String, List<Integer[]>> makeDefaultAssetLocations() {
-        String[] ls = {"Wizard", "Brickwall", "Stonewall",
-                "Gremlin", "Door", "Empty", "Powerup", "Frozenwall"
-        };
+        String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Empty", "Powerup", "Frozenwall"};
         Map<String, List<Integer[]>> map = new HashMap<>();
         for (String s : ls)
             map.put(s, new ArrayList<>());

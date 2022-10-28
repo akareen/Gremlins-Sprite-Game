@@ -37,8 +37,7 @@ public class FireBall extends MovingBall {
 
     protected boolean isMovingIntoBrickWall(TileGrid grid) {
         if (grid.getTile(getYPos(), getXPos()).getName().equals("brickwall")) {
-            grid.setTile(getYPos(), getXPos(),
-                    ObjectMaker.makeDestroyedWall(getYPos() * 20, getXPos() * 20));
+            grid.setTile(getYPos(), getXPos(), ObjectMaker.makeDestroyedWall(getYPos() * 20, getXPos() * 20));
             return true;
         }
         return false;
@@ -50,8 +49,7 @@ public class FireBall extends MovingBall {
 
     protected boolean isMovingIntoFrozenWall(TileGrid grid) {
         if (grid.getTile(getYPos(), getXPos()).getName().equals("frozenwall")) {
-            grid.setTile(getYPos(), getXPos(),
-                    ObjectMaker.makeDestroyedWall(getYPos() * 20, getXPos() * 20));
+            grid.setTile(getYPos(), getXPos(), ObjectMaker.makeDestroyedWall(getYPos() * 20, getXPos() * 20));
             return true;
         }
         return false;
@@ -66,10 +64,9 @@ public class FireBall extends MovingBall {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(MovingBall o) {
         if (!(o instanceof FireBall))
             return false;
-        FireBall f = (FireBall) o;
-        return f.y == this.y && f.x == this.x && f.direction == this.direction;
+        return o.y == this.y && o.x == this.x && o.direction == this.direction;
     }
 }
