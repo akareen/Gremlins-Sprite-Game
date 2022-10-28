@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Movable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Movable.java</span></div><h1>Movable.java</h1><pre class="source lang-java linenums">package gremlins;
+
+public class Movable {
+    protected int y;
+    protected int x;
+    protected int direction;  //0 = West, 1 = East, 2, = North, 3 = South
+<span class="fc" id="L7">    protected int[][] movementModifiers = {</span>
+            {0, -1}, // West
+            {0,  1}, // East
+            {-1, 0}, // North
+            {1,  0}  // South
+    };
+
+<span class="fc" id="L14">    public Movable(int y, int x, int direction) {</span>
+<span class="fc" id="L15">        this.y = y;</span>
+<span class="fc" id="L16">        this.x = x;</span>
+<span class="fc" id="L17">        this.direction = direction;</span>
+<span class="fc" id="L18">    }</span>
+
+    // Get and return the tile that the movable object is moving into with the current direction
+    public Tile getFutureTile(int direction, TileGrid grid) {
+<span class="fc" id="L22">        int yPos = (y / 20) + this.movementModifiers[direction][0];</span>
+<span class="fc" id="L23">        int xPos = (x / 20) + this.movementModifiers[direction][1];</span>
+<span class="fc" id="L24">        return grid.getTile(yPos, xPos);</span>
+    }
+
+    // Modify the position of y and x by the corresponding change in the movementModifiers array
+    protected void changePosition() {
+<span class="fc" id="L29">        this.y += this.movementModifiers[this.direction][0];</span>
+<span class="fc" id="L30">        this.x += this.movementModifiers[this.direction][1];</span>
+<span class="fc" id="L31">    }</span>
+
+    // Returns true if moving into a brick or stonewall
+    public boolean movingIntoWall(TileGrid grid) {
+<span class="fc" id="L35">        Tile futureTile = this.getFutureTile(this.direction, grid);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        return futureTile.getName().equals(&quot;brickwall&quot;)</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                || futureTile.getName().equals(&quot;stonewall&quot;)</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">                || futureTile.getName().equals(&quot;frozenwall&quot;);</span>
+    }
+
+    public int[] getCoords() {
+<span class="fc" id="L42">        return new int[] {this.y, this.x};</span>
+    }
+
+    public int getY() {
+<span class="fc" id="L46">        return y;</span>
+    }
+
+    public void setY(int y) {
+<span class="fc" id="L50">        this.y = y;</span>
+<span class="fc" id="L51">    }</span>
+
+    public int getX() {
+<span class="fc" id="L54">        return x;</span>
+    }
+
+    public void setX(int x) {
+<span class="fc" id="L58">        this.x = x;</span>
+<span class="fc" id="L59">    }</span>
+    
+
+    public void setDirection(int direction) {
+<span class="fc" id="L63">        this.direction = direction;</span>
+<span class="fc" id="L64">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

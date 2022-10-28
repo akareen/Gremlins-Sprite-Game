@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DestroyedWall.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">DestroyedWall.java</span></div><h1>DestroyedWall.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class DestroyedWall extends Tile {
+    private final PImage[] sprites;
+<span class="fc" id="L8">    protected int spriteNumber = -1;</span>
+<span class="fc" id="L9">    protected boolean fullyDestroyed = false;</span>
+
+    public DestroyedWall(int y, int x, String name, PImage[] sprites) {
+<span class="fc" id="L12">        super(y, x, name);</span>
+<span class="fc" id="L13">        this.sprites = sprites;</span>
+<span class="fc" id="L14">    }</span>
+
+    public void tick() {
+<span class="fc" id="L17">        this.spriteNumber++;</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (this.spriteNumber &gt; 3)</span>
+<span class="fc" id="L19">            fullyDestroyed = true;</span>
+<span class="fc" id="L20">    }</span>
+
+    public void draw(PApplet app) {
+<span class="nc" id="L23">        app.image(this.sprites[spriteNumber], super.getX(), super.getY());</span>
+<span class="nc" id="L24">    }</span>
+
+    public boolean isFullyDestroyed() {
+<span class="fc" id="L27">        return fullyDestroyed;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

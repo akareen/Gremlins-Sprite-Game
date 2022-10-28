@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameLogic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gremlins_scaffold</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">GameLogic.java</span></div><h1>GameLogic.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public interface GameLogic {
+    static void wizardLogic(App app) {
+<span class="nc" id="L9">        app.wizard.tick(app.grid, app.fireBalls);</span>
+<span class="nc" id="L10">    }</span>
+
+    static void gremlinLogic(App app) {
+<span class="nc bnc" id="L13" title="All 2 branches missed.">        if (app.currentTimeFrozen &gt;= app.totalTimeFrozen) {</span>
+<span class="nc" id="L14">            unFreezeGremlins(app);</span>
+<span class="nc" id="L15">            System.out.println(&quot;YO&quot;);</span>
+        }
+
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins) {</span>
+<span class="nc" id="L19">            gremlin.tick(app.grid, app.slimeBalls, app.fireBalls, app.wizard);</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">            if (Helper.collisionDetector(gremlin.getCoords(), app.wizard.getCoords())) {</span>
+<span class="nc" id="L21">                app.lives--;</span>
+<span class="nc" id="L22">                SetupGame.loadObjects(app);</span>
+<span class="nc" id="L23">                break;</span>
+            }
+<span class="nc" id="L25">        }</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (app.currentTimeFrozen &gt;= 1)</span>
+<span class="nc" id="L27">            app.currentTimeFrozen++;</span>
+<span class="nc" id="L28">    }</span>
+
+    static boolean fireSlimeCollision(SlimeBall slime, App app) {
+<span class="nc" id="L31">        boolean collision = false;</span>
+<span class="nc" id="L32">        List&lt;FireBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls)</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            if (Helper.collisionDetector(fireBall.getCoords(), slime.getCoords())) {</span>
+<span class="nc" id="L35">                toRemove.add(fireBall);</span>
+<span class="nc" id="L36">                collision = true;</span>
+            }
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        for (FireBall fireBall : toRemove)</span>
+<span class="nc" id="L39">            app.fireBalls.remove(fireBall);</span>
+<span class="nc" id="L40">        return collision;</span>
+    }
+
+
+    static void slimeBallLogic(App app) {
+<span class="nc" id="L45">        List&lt;SlimeBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (SlimeBall slimeBall : app.slimeBalls) {</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            for (int i = 0; i &lt; slimeBall.getSPEED(); i++) {</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">                if (fireSlimeCollision(slimeBall, app))</span>
+<span class="nc" id="L49">                    toRemove.add(slimeBall);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">                if (slimeBall.tick(app.grid)) {</span>
+<span class="nc" id="L51">                    toRemove.add(slimeBall);</span>
+<span class="nc" id="L52">                    break;</span>
+                }
+<span class="nc bnc" id="L54" title="All 2 branches missed.">                if (Helper.collisionDetector(slimeBall.getCoords(), app.wizard.getCoords())) {</span>
+<span class="nc" id="L55">                    app.lives--;</span>
+<span class="nc" id="L56">                    SetupGame.loadObjects(app);</span>
+<span class="nc" id="L57">                    return;</span>
+                }
+            }
+<span class="nc" id="L60">        }</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (SlimeBall item : toRemove)</span>
+<span class="nc" id="L62">            app.slimeBalls.remove(item);</span>
+<span class="nc" id="L63">    }</span>
+
+    static void fireBallLogic(App app) {
+<span class="nc" id="L66">        List&lt;FireBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls) {</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            for (int i = 0; i &lt; fireBall.getSPEED(); i++) {</span>
+<span class="nc" id="L69">                int tickVal = fireBall.tick(app.grid);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                if (tickVal == 2)</span>
+<span class="nc" id="L71">                    freezeGremlins(app);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">                if (tickVal != 0) {</span>
+<span class="nc" id="L73">                    toRemove.add(fireBall);</span>
+<span class="nc" id="L74">                    break;</span>
+                }
+            }
+<span class="nc" id="L77">        }</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (FireBall item : toRemove)</span>
+<span class="nc" id="L79">            app.fireBalls.remove(item);</span>
+<span class="nc" id="L80">    }</span>
+
+    static void unFreezeGremlins(App app) {
+<span class="nc" id="L83">        app.currentTimeFrozen = 0;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
+<span class="nc" id="L85">            gremlin.setMoving(true);</span>
+<span class="nc" id="L86">    }</span>
+    static void freezeGremlins(App app) {
+<span class="nc" id="L88">        app.currentTimeFrozen = 1;</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
+<span class="nc" id="L90">            gremlin.setMoving(false);</span>
+<span class="nc" id="L91">    }</span>
+
+    static void evaluatePowerups(App app) {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (PowerUpTile powerup : app.powerupTiles) {</span>
+<span class="nc bnc" id="L95" title="All 4 branches missed.">            if (!powerup.isEmpty() &amp;&amp; Helper.collisionDetector(</span>
+<span class="nc" id="L96">                    powerup.getCoords(), app.wizard.getCoords())) {</span>
+<span class="nc" id="L97">                powerup.activatePowerup(app.wizard);</span>
+            }
+<span class="nc" id="L99">        }</span>
+<span class="nc" id="L100">    }</span>
+
+    static boolean checkWin(App app) {
+<span class="nc" id="L103">        return Helper.collisionDetector(</span>
+<span class="nc" id="L104">                app.wizard.getCoords(),</span>
+<span class="nc" id="L105">                app.grid.getTile(app.exitLocation[0], app.exitLocation[1]).getCoords());</span>
+    }
+
+    static void gameExecution(App app) {
+<span class="nc" id="L109">        evaluatePowerups(app);</span>
+<span class="nc" id="L110">        wizardLogic(app);</span>
+<span class="nc" id="L111">        gremlinLogic(app);</span>
+<span class="nc" id="L112">        slimeBallLogic(app);</span>
+<span class="nc" id="L113">        fireBallLogic(app);</span>
+<span class="nc" id="L114">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

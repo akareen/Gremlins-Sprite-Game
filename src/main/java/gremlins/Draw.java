@@ -43,68 +43,24 @@ public interface Draw {
     }
 
     static void drawWizard(App app) {
-        app.wizard.tick(app.grid, app.fireBalls);
         app.wizard.draw(app);
     }
 
     static void drawGremlins(App app) {
-        if (app.currentTimeFrozen >= app.totalTimeFrozen) {
-            app.unFreezeGremlins();
-            System.out.println("YO");
-        }
-
-        for (Gremlin gremlin : app.gremlins) {
-            gremlin.tick(app.grid, app.slimeBalls, app.fireBalls, app.wizard);
+        for (Gremlin gremlin : app.gremlins)
             gremlin.draw(app);
-            if (Helper.collisionDetector(gremlin.getCoords(), app.wizard.getCoords())) {
-                app.lives--;
-                app.loadObjects();
-                break;
-            }
-        }
-        if (app.currentTimeFrozen >= 1)
-            app.currentTimeFrozen++;
     }
 
     static void drawSlimeBalls(App app) {
-        List<SlimeBall> toRemove = new ArrayList<>();
-        for (SlimeBall slimeBall : app.slimeBalls) {
-            for (int i = 0; i < slimeBall.getSPEED(); i++) {
-                if (app.fireSlimeCollision(slimeBall))
-                    toRemove.add(slimeBall);
-                if (slimeBall.tick(app.grid)) {
-                    toRemove.add(slimeBall);
-                    break;
-                }
-                slimeBall.draw(app);
-                if (Helper.collisionDetector(slimeBall.getCoords(), app.wizard.getCoords())) {
-                    app.lives--;
-                    app.loadObjects();
-                    return;
-                }
-            }
-        }
-        for (SlimeBall item : toRemove)
-            app.slimeBalls.remove(item);
+        for (SlimeBall slimeBall : app.slimeBalls)
+            slimeBall.draw(app);
     }
 
     static void drawFireBalls(App app) {
-        List<FireBall> toRemove = new ArrayList<>();
-        for (FireBall fireBall : app.fireBalls) {
-            for (int i = 0; i < fireBall.getSPEED(); i++) {
-                int tickVal = fireBall.tick(app.grid);
-                if (tickVal == 2)
-                    app.freezeGremlins();
-                if (tickVal != 0) {
-                    toRemove.add(fireBall);
-                    break;
-                }
-                fireBall.draw(app);
-            }
-        }
-        for (FireBall item : toRemove)
-            app.fireBalls.remove(item);
+        for (FireBall fireBall : app.fireBalls)
+            fireBall.draw(app);
     }
+
 
     static void drawTextField(App app) {
         Text.drawLives(app, ObjectMaker.getImage("wizard1"), app.lives);
@@ -114,6 +70,17 @@ public interface Draw {
     static void drawManaBar(App app) {
         if (app.wizard.isOnCooldown())
             Text.drawManaBar(app, app.wizard.getCooldownFrames(), app.wizard.getTimeInCooldown());
+    }
+
+    static void drawGame(App app) {
+        drawBackground(app);
+        drawTiles(app);
+        drawWizard(app);
+        drawGremlins(app);
+        drawSlimeBalls(app);
+        drawFireBalls(app);
+        drawTextField(app);
+        drawManaBar(app);
     }
 
 }

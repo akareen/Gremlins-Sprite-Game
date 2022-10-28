@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="gremlins.FireBallTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-10-28T23:39:46" hostname="Aks-MacBook-Air.local" time="0.004">
+  <properties/>
+  <testcase name="isMovingIntoFrozenWallTest()" classname="gremlins.FireBallTest" time="0.001"/>
+  <testcase name="getXPos()" classname="gremlins.FireBallTest" time="0.0"/>
+  <testcase name="getYPos()" classname="gremlins.FireBallTest" time="0.0"/>
+  <testcase name="isMovingIntoBrickWallTest()" classname="gremlins.FireBallTest" time="0.0"/>
+  <testcase name="tickTest()" classname="gremlins.FireBallTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="gremlins.TileTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2022-10-28T23:39:46" hostname="Aks-MacBook-Air.local" time="0.003">
+  <properties/>
+  <testcase name="constructorTest()" classname="gremlins.TileTest" time="0.0"/>
+  <testcase name="isFullyDestroyedTest()" classname="gremlins.TileTest" time="0.0"/>
+  <testcase name="getNameTest()" classname="gremlins.TileTest" time="0.0"/>
+  <testcase name="isEmptyTest()" classname="gremlins.TileTest" time="0.0"/>
+  <testcase name="getCoordsTest()" classname="gremlins.TileTest" time="0.0"/>
+  <testcase name="setEmptyTest()" classname="gremlins.TileTest" time="0.0"/>
+  <testcase name="tickTest()" classname="gremlins.TileTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

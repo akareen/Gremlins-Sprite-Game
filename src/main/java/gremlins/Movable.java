@@ -33,11 +33,9 @@ public class Movable {
     // Returns true if moving into a brick or stonewall
     public boolean movingIntoWall(TileGrid grid) {
         Tile futureTile = this.getFutureTile(this.direction, grid);
-        if (futureTile.getName().equals("brickwall"))
-            return true;
-        if (futureTile.getName().equals("stonewall"))
-            return true;
-        return false;
+        return futureTile.getName().equals("brickwall")
+                || futureTile.getName().equals("stonewall")
+                || futureTile.getName().equals("frozenwall");
     }
 
     public int[] getCoords() {

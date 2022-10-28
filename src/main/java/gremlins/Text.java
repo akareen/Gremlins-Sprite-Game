@@ -41,6 +41,10 @@ public class Text {
         app.text("Game Over", 200, 300);
         app.fill(0,255,0); // Green
         app.text("YOU WIN!", 205, 370);
+        app.fill(255,255,255); // White
+        app.text("Press ENTER", 183, 440);
+        app.fill(255,255,255); // White
+        app.text("to play again", 185, 510);
     }
 
 
@@ -52,6 +56,10 @@ public class Text {
         app.text("Game Over", 200, 300);
         app.fill(255, 0, 0); // Red
         app.text("YOU LOSE!", 195, 370);
+        app.fill(255,255,255); // White
+        app.text("Press ENTER", 183, 440);
+        app.fill(255,255,255); // White
+        app.text("to play again", 185, 510);
     }
 
 
