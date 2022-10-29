@@ -2,64 +2,41 @@
 
 import processing.core.PApplet;
 
-public class Tile {
-    private int y;
-    private int x;
+public class Tile extends GameObject {
     private final String name;
-<span class="fc" id="L9">    private boolean empty = false;</span>
+<span class="nc" id="L7">    private boolean empty = false;</span>
 
-<span class="fc" id="L11">    public Tile(int y, int x, String name) {</span>
-<span class="fc" id="L12">        this.y = y;</span>
-<span class="fc" id="L13">        this.x = x;</span>
-<span class="fc" id="L14">        this.name = name;</span>
-<span class="fc" id="L15">    }</span>
+    public Tile(int y, int x, String name) {
+<span class="nc" id="L10">        super(y, x);</span>
+<span class="nc" id="L11">        this.name = name;</span>
+<span class="nc" id="L12">    }</span>
 
-<span class="fc" id="L17">    public void tick() {}</span>
+<span class="nc" id="L14">    public void tick() {}</span>
 
-<span class="nc" id="L19">    public void draw(PApplet app) {}</span>
+<span class="nc" id="L16">    public void draw(PApplet app) {}</span>
 
-    // Getters and Setters
-    public int[] getCoords() {
-<span class="fc" id="L23">        return new int[] {y, x};</span>
-    }
-
-    public int getY() {
-<span class="fc" id="L27">        return y;</span>
-    }
-
-    public void setY(int y) {
-<span class="fc" id="L31">        this.y = y;</span>
-<span class="fc" id="L32">    }</span>
-
-    public int getX() {
-<span class="fc" id="L35">        return x;</span>
-    }
-
-    public void setX(int x) {
-<span class="fc" id="L39">        this.x = x;</span>
-<span class="fc" id="L40">    }</span>
 
     public String getName() {
-<span class="fc" id="L43">        return name;</span>
+<span class="nc" id="L20">        return name;</span>
     }
 
     public boolean isFullyDestroyed() {
-<span class="fc" id="L47">        return false;</span>
+<span class="nc" id="L24">        return false;</span>
     }
 
     public boolean isEmpty() {
-<span class="fc" id="L51">        return empty;</span>
+<span class="nc" id="L28">        return empty;</span>
     }
 
     public void setEmpty(boolean empty) {
-<span class="fc" id="L55">        this.empty = empty;</span>
-<span class="fc" id="L56">    }</span>
+<span class="nc" id="L32">        this.empty = empty;</span>
+<span class="nc" id="L33">    }</span>
 
     public boolean equals(Object o) {
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!(o instanceof Tile))</span>
-<span class="nc" id="L60">            return false;</span>
-<span class="fc" id="L61">        Tile tile = (Tile) o;</span>
-<span class="pc bpc" id="L62" title="3 of 6 branches missed.">        return tile.name.equals(this.name)</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (!(o instanceof Tile))</span>
+<span class="nc" id="L37">            return false;</span>
+<span class="nc" id="L38">        Tile tile = (Tile) o;</span>
+<span class="nc bnc" id="L39" title="All 6 branches missed.">        return tile.name.equals(this.name)</span>
                 &amp;&amp; tile.y == this.y
                 &amp;&amp; tile.x == this.x;
     }

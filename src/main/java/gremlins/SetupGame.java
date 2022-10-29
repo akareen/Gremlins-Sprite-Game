@@ -3,8 +3,17 @@ package gremlins;
 import java.io.File;
 import java.util.*;
 
+/**
+ * An interface used to setup the game.
+ */
 public interface SetupGame {
 
+    /**
+     * Loads the level specified by the levelNum by reading the level file by character, creating asset locations
+     * from this data and then finally once the data is organised it is used to create the game objects.
+     * @param app, the main application class.
+     * @param levelNum, the level number.
+     */
     static void loadLevel(App app, int levelNum) {
         setValuesFromMap(app, levelNum);
         readLevel(app);
@@ -12,12 +21,24 @@ public interface SetupGame {
         loadObjects(app);
     }
 
+    /**
+     * Sets the values of the layoutFile, gremlinCooldown and wizardCooldown from the levelsMap.
+     * The layoutFile is the path to the level text file.
+     * @param app, the main application class.
+     * @param levelNum, the level number.
+     */
     static void setValuesFromMap(App app, int levelNum) {
         app.layoutFile = app.levelsMap.get(levelNum).get("layout");
         app.wizardCooldown = Double.parseDouble(app.levelsMap.get(levelNum).get("wizard_cooldown"));
         app.enemyCooldown = Double.parseDouble(app.levelsMap.get(levelNum).get("enemy_cooldown"));
     }
 
+    /**
+     * Reads the level text file and stores the data in the tileLetterConfiguration.
+     * tileLetterConfiguration is a 33x36 string array that stores the layout of the current level.
+     * Each character in the level text file is stored in the tileLetterConfiguration.
+     * @param app, the main application class.
+     */
     static void readLevel(App app) {
         File fileName = new File(app.layoutFile);
         try {
@@ -35,6 +56,13 @@ public interface SetupGame {
         }
     }
 
+    /**
+     * Creates the asset locations from the tileLetterConfiguration.
+     * The asset locations are stored in the assetLocations map.
+     * The key is the name of the asset.
+     * The value is an ArrayList of all the locations of the asset.
+     * @param app, the main application class.
+     */
     static void createAssetLocations(App app) {
         app.assetLocations = makeDefaultAssetLocations();
         String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Powerup", "Frozenwall"};
@@ -52,6 +80,13 @@ public interface SetupGame {
             }
     }
 
+    /**
+     * Creates the default asset locations.
+     * The asset locations are stored in the assetLocations map.
+     * The key is the name of the asset.
+     * The value is an empty ArrayList of all the locations of the asset.
+     * @return the default asset locations.
+     */
     static Map<String, List<Integer[]>> makeDefaultAssetLocations() {
         String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Empty", "Powerup", "Frozenwall"};
         Map<String, List<Integer[]>> map = new HashMap<>();
@@ -60,6 +95,11 @@ public interface SetupGame {
         return map;
     }
 
+    /**
+     * Loads the game objects from the asset locations.
+     * All the game objects are loaded into the main application class.
+     * @param app, the main application class.
+     */
     static void loadObjects(App app) {
         app.slimeBalls = new ArrayList<>();
         app.fireBalls = new ArrayList<>();

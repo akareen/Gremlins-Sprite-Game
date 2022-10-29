@@ -3,7 +3,7 @@ package gremlins;
 /**
  * The head class of the hierarchy, represents all game objects.
  */
-public class GameObject {
+public abstract class GameObject {
     /**
      * The y coordinate of the object.
      */
