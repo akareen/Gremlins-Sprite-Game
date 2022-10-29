@@ -1,7 +1,7 @@
 package gremlins;
 
 /**
- * Extends the tile class and represents an empty tile.
+ * Extends the Tile class and represents an empty tile.
  */
 public class EmptyTile extends Tile {
     /**

@@ -22,9 +22,4 @@ public class HelperTest {
 //        }
 //    }
 
-    @Test
-    public void oppositeDirectionTest() {
-        assertEquals(Helper.oppositeDirection(2), 3);
-        assertEquals(Helper.oppositeDirection(10), 0);
-    }
 }

@@ -34,18 +34,16 @@ public class Wizard extends Movable {
         //Shooting the Fireball
         shootFireball(fireBalls);
         //Repeat based on speed
-        for (int i = 0; i < this.speed; i++) {
-            //When the Player is On a Block
-            if (super.y % 20 == 0 && super.x % 20 == 0) {
-                this.moving = futureMoving;
-                super.direction = futureDirection;
-                //LOGIC
-                if (moving && super.movingIntoWall(grid))
-                    moving = false;
-            }
-            if (moving)
-                super.changePosition();
+        //When the Player is On a Block
+        if (super.y % 20 == 0 && super.x % 20 == 0) {
+            this.moving = futureMoving;
+            super.direction = futureDirection;
+            //LOGIC
+            if (moving && super.movingIntoWall(grid))
+                moving = false;
         }
+        if (moving)
+            super.changePosition();
     }
 
     public void draw(PApplet app) {

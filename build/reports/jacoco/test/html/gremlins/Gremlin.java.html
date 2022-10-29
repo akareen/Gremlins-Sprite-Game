@@ -7,87 +7,155 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Extends the Movable class to add the functionality of a Gremlin.
+ */
 public class Gremlin extends Movable {
+    /**
+     * The cooldown of the shooting the slimeball in frames.
+     */
     private final int cooldownFrames;
+    /**
+     * The image of the gremlin.
+     */
     private final PImage sprite;
-<span class="nc" id="L13">    private int frames = 0;</span>
-<span class="nc" id="L14">    private boolean moving = true;</span>
+    /**
+     * The amount of frames that has passed in total.
+     */
+<span class="nc" id="L25">    private int frames = 0;</span>
+    /**
+     * A boolean value representing if the gremlin is moving or not.
+     */
+<span class="nc" id="L29">    private boolean moving = true;</span>
+    /**
+     * The speed of the gremlin.
+     */
+<span class="nc" id="L33">    protected int speed = 2;</span>
 
+    /**
+     * The constructor for the Gremlin class.
+     * @param y, the y coordinate of the gremlin.
+     * @param x, the x coordinate of the gremlin.
+     * @param cooldownDouble, the cooldown of the shooting the slimeball.
+     * @param sprite, the image of the gremlin.
+     */
     public Gremlin(int y, int x, double cooldownDouble, PImage sprite) {
-<span class="nc" id="L17">        super(y, x, new Random().nextInt(4));</span>
-<span class="nc" id="L18">        this.cooldownFrames = (int) (cooldownDouble * 60.0);</span>
-<span class="nc" id="L19">        this.sprite = sprite;</span>
-<span class="nc" id="L20">    }</span>
+<span class="nc" id="L43">        super(y, x, new Random().nextInt(4));</span>
+<span class="nc" id="L44">        this.cooldownFrames = (int) (cooldownDouble * 60.0);</span>
+<span class="nc" id="L45">        this.sprite = sprite;</span>
+<span class="nc" id="L46">    }</span>
 
-
+    /**
+     * If the gremlin is moving and the shooting of slimeballs is off cooldown, it will shoot a slimeball.
+     * If the gremlin has hit a fireball it will respawn the gremlin at least 10 tiles away from the wizard.
+     * If the gremlin is moving and on a whole tile it will evaluate if it is moving into a wall and
+     * adjust accordingly otherwise it will simply move at the movement speed of 1 frames per second.
+     * @param grid, the grid of the game.
+     * @param slimeBalls, the list of slimeballs.
+     * @param fireBalls, the list of fireballs.
+     * @param wizard, the wizard object.
+     */
     public void tick(TileGrid grid, List&lt;SlimeBall&gt; slimeBalls, List&lt;FireBall&gt; fireBalls, Wizard wizard) {
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (moving) {</span>
-<span class="nc bnc" id="L25" title="All 2 branches missed.">            if (frames % cooldownFrames == 0)</span>
-<span class="nc" id="L26">                slimeBalls.add(ObjectMaker.makeSlimeBall(super.y, super.x, this.direction));</span>
-<span class="nc" id="L27">            frames++;</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (moving) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (frames % cooldownFrames == 0)</span>
+<span class="nc" id="L61">                slimeBalls.add(ObjectMaker.makeSlimeBall(super.y, super.x, this.direction));</span>
+<span class="nc" id="L62">            frames++;</span>
         }
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (contactFireballs(fireBalls))</span>
-<span class="nc" id="L30">            respawn(grid, wizard);</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (moving) {</span>
-<span class="nc bnc" id="L32" title="All 4 branches missed.">            if (super.y % 20 == 0 &amp;&amp; super.x % 20 == 0) {</span>
-<span class="nc" id="L33">                modifyMovement(grid);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (contactFireballs(fireBalls))</span>
+<span class="nc" id="L65">            respawn(grid, wizard);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (moving) {</span>
+<span class="nc bnc" id="L67" title="All 4 branches missed.">            if (super.y % 20 == 0 &amp;&amp; super.x % 20 == 0) {</span>
+<span class="nc" id="L68">                modifyMovement(grid);</span>
             }
-<span class="nc" id="L35">            super.changePosition();</span>
+<span class="nc" id="L70">            super.changePosition();</span>
         }
-<span class="nc" id="L37">    }</span>
+<span class="nc" id="L72">    }</span>
 
-
+    /**
+     * Draws the gremlin object.
+     * @param app, the main application.
+     */
     public void draw(PApplet app) {
-<span class="nc" id="L41">        app.image(this.sprite, super.x, super.y);</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L79">        app.image(this.sprite, super.x, super.y);</span>
+<span class="nc" id="L80">    }</span>
 
-    //Changes the movement of the gremlin if it is moving into a wall
+    /**
+     * Changes the direction of the gremlin if it is moving into a wall.
+     * @param grid, the grid of tiles.
+     */
     private void modifyMovement(TileGrid grid) {
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (super.movingIntoWall(grid))</span>
-<span class="nc" id="L47">            super.direction = newDirection(grid);</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (super.movingIntoWall(grid))</span>
+<span class="nc" id="L88">            super.direction = newDirection(grid);</span>
+<span class="nc" id="L89">    }</span>
 
-    // Finds a new empty direction for the gremlin to move into, does not come
-    // back same way unless it's the only valid
+    /**
+     * Finds a new empty direction for the gremlin to move into, does not come
+     * back the same way unless it's the only valid.
+     * @param grid, the grid of tiles.
+     * @return the new direction for the gremlin to move into.
+     */
     private int newDirection(TileGrid grid) {
-<span class="nc" id="L53">        int gridY = super.y / 20;</span>
-<span class="nc" id="L54">        int gridX = super.x / 20;</span>
-<span class="nc" id="L55">        List&lt;Integer&gt; validMoves = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        for (int i = 0; i &lt; super.movementModifiers.length; i++) {</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (grid.withinRange(gridY + super.movementModifiers[i][0], gridX + super.movementModifiers[i][1])</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">                &amp;&amp; grid.getTile(gridY + super.movementModifiers[i][0], gridX + super.movementModifiers[i][1]).isEmpty())</span>
-<span class="nc" id="L59">                    validMoves.add(i);</span>
+<span class="nc" id="L98">        int gridY = super.y / 20;</span>
+<span class="nc" id="L99">        int gridX = super.x / 20;</span>
+<span class="nc" id="L100">        List&lt;Integer&gt; validMoves = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        for (int i = 0; i &lt; super.movementModifiers.length; i++) {</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (grid.withinRange(gridY + super.movementModifiers[i][0], gridX + super.movementModifiers[i][1])</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                &amp;&amp; grid.getTile(gridY + super.movementModifiers[i][0], gridX + super.movementModifiers[i][1]).isEmpty())</span>
+<span class="nc" id="L104">                    validMoves.add(i);</span>
         }
-<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (validMoves.size() == 1)</span>
-<span class="nc" id="L62">            return validMoves.get(0);</span>
-<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (validMoves.size() &gt; 1) {</span>
-<span class="nc" id="L64">            validMoves.remove(Integer.valueOf(Helper.oppositeDirection(direction)));</span>
-<span class="nc" id="L65">            return validMoves.get(new Random().nextInt(validMoves.size()));</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (validMoves.size() == 1)</span>
+<span class="nc" id="L107">            return validMoves.get(0);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (validMoves.size() &gt; 1) {</span>
+<span class="nc" id="L109">            validMoves.remove(Integer.valueOf(oppositeDirection()));</span>
+<span class="nc" id="L110">            return validMoves.get(new Random().nextInt(validMoves.size()));</span>
         }
-<span class="nc" id="L67">        return super.direction;</span>
+<span class="nc" id="L112">        return super.direction;</span>
     }
 
-
-    // If the Gremlin hits a fireball remove the fireball from the array and
-    // return true so that the gremlin can be deleted
+    /**
+     * Checks if the gremlin has been hit by a fireball. Removes the fireball from the fireballs list if it has
+     * hit the gremlin.
+     * @param fireBalls, the list of fireballs.
+     * @return true if the gremlin has been hit by a fireball, false otherwise.
+     */
     private boolean contactFireballs(List&lt;FireBall&gt; fireBalls) {
-<span class="nc bnc" id="L74" title="All 2 branches missed.">        for (FireBall fireBall : fireBalls)</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (Helper.collisionDetector(super.getCoords(), fireBall.getCoords())) {</span>
-<span class="nc" id="L76">                fireBalls.remove(fireBall);</span>
-<span class="nc" id="L77">                return true;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (FireBall fireBall : fireBalls)</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (GameLogic.hitboxOverlap(super.getCoords(), fireBall.getCoords())) {</span>
+<span class="nc" id="L124">                fireBalls.remove(fireBall);</span>
+<span class="nc" id="L125">                return true;</span>
             }
-<span class="nc" id="L79">        return false;</span>
+<span class="nc" id="L127">        return false;</span>
     }
 
-    // Respawns at a random location at least 10 tiles away from the wizard
+    /**
+     * Respawns at a random location at least 10 tiles away from the wizard.
+      */
     private void respawn(TileGrid grid, Wizard wizard) {
-<span class="nc" id="L84">        Integer[] newCoordinates = grid.respawnLocation(wizard.getY() / 20, wizard.getX() / 20);</span>
-<span class="nc" id="L85">        this.y = newCoordinates[0] * 20;</span>
-<span class="nc" id="L86">        this.x = newCoordinates[1] * 20;</span>
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L134">        Integer[] newCoordinates = grid.respawnLocation(wizard.getY() / 20, wizard.getX() / 20);</span>
+<span class="nc" id="L135">        this.y = newCoordinates[0] * 20;</span>
+<span class="nc" id="L136">        this.x = newCoordinates[1] * 20;</span>
+<span class="nc" id="L137">    }</span>
 
+    /**
+     * Sets the moving boolean to the value passed into the function.
+     * @param moving, the boolean value to set the moving boolean to.
+     */
     public void setMoving(boolean moving) {
-<span class="nc" id="L90">        this.moving = moving;</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L144">        this.moving = moving;</span>
+<span class="nc" id="L145">    }</span>
+
+
+    /**
+     * Returns the opposite direction of the direction the gremlin is currently facing.
+     * @return int, the opposite direction of the gremlin.
+     */
+    protected int oppositeDirection() {
+<span class="nc" id="L153">        int[] dir = {0, 1, 2, 3};</span>
+<span class="nc" id="L154">        int[] opp = {1, 0, 3, 2};</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        for (int i = 0; i &lt; dir.length; i++)</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (dir[i] == super.direction)</span>
+<span class="nc" id="L157">                return opp[i];</span>
+<span class="nc" id="L158">        return 0;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

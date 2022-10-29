@@ -3,28 +3,60 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 
+
+/**
+ * A class representing a brick wall in a destruction sequence.
+ */
 public class DestroyedWall extends Tile {
+    /**
+     * A PImage array that stores the images for the destroyed wall.
+     */
     private final PImage[] sprites;
-<span class="fc" id="L8">    protected int spriteNumber = -1;</span>
-<span class="fc" id="L9">    protected boolean fullyDestroyed = false;</span>
+    /**
+     * The current image number of the destroyed wall.
+     */
+<span class="nc" id="L18">    protected int spriteNumber = -1;</span>
+    /**
+     * Is true once all the images in the PImage array have been displayed
+     */
+<span class="nc" id="L22">    protected boolean fullyDestroyed = false;</span>
 
+    /**
+     * Creates a new DestroyedWall object.
+     * @param y, the y coordinate of the destroyed wall
+     * @param x, the x coordinate of the destroyed wall
+     * @param name, the name of the destroyed wall
+     * @param sprites, the PImage array that stores the images for the destroyed wall
+     */
     public DestroyedWall(int y, int x, String name, PImage[] sprites) {
-<span class="fc" id="L12">        super(y, x, name);</span>
-<span class="fc" id="L13">        this.sprites = sprites;</span>
-<span class="fc" id="L14">    }</span>
+<span class="nc" id="L32">        super(y, x, name);</span>
+<span class="nc" id="L33">        this.sprites = sprites;</span>
+<span class="nc" id="L34">    }</span>
 
+    /**
+     * Increments the spriteNumber by 1.
+     * If the spriteNumber is greater than the length of the PImage array, then the fullyDestroyed boolean is set to true.
+     */
     public void tick() {
-<span class="fc" id="L17">        this.spriteNumber++;</span>
-<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (this.spriteNumber &gt; 3)</span>
-<span class="fc" id="L19">            fullyDestroyed = true;</span>
-<span class="fc" id="L20">    }</span>
+<span class="nc" id="L41">        this.spriteNumber++;</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (this.spriteNumber &gt; 3)</span>
+<span class="nc" id="L43">            fullyDestroyed = true;</span>
+<span class="nc" id="L44">    }</span>
 
+    /**
+     * Draws the current image of the destroyed wall.
+     * @param app, The main application class
+     */
     public void draw(PApplet app) {
-<span class="nc" id="L23">        app.image(this.sprites[spriteNumber], super.getX(), super.getY());</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L51">        app.image(this.sprites[spriteNumber], super.getX(), super.getY());</span>
+<span class="nc" id="L52">    }</span>
 
+    /**
+     * Returns the fullyDestroyed boolean.
+     * @return boolean, true if the destroyed wall is fully destroyed, false otherwise
+     */
     public boolean isFullyDestroyed() {
-<span class="fc" id="L27">        return fullyDestroyed;</span>
+<span class="nc" id="L59">        return fullyDestroyed;</span>
     }
 
 }

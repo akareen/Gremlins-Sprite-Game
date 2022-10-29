@@ -7,7 +7,7 @@ public abstract class MovingBall extends Movable {
     /**
      * The speed of the ball in frames per second.
      */
-    final int SPEED = 4;
+    static final int SPEED = 4;
 
     /**
      * Constructor of the MovingBall object.
@@ -17,14 +17,6 @@ public abstract class MovingBall extends Movable {
      */
     public MovingBall(int y, int x, int direction) {
         super(y, x, direction);
-    }
-
-    /**
-     * Returns the speed of the ball.
-     * @return the speed of the ball.
-     */
-    public int getSPEED() {
-        return this.SPEED;
     }
 
     /**

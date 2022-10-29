@@ -2,116 +2,175 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * An interface used to control the logic of the game.
+ */
 public interface GameLogic {
+    /**
+     * A parameter used to calculate the four corners of a 20x20 image from the top left corner.
+     */
+    final static int BLOCK_MODIFIER = 20 - 1;
+
+    /**
+     * A function that determines whether the hitboxes of two objects overlap.
+     * Uses the helper function _hitboxOverlap to test if coordinate1 overlaps with coordinate2 or vice versa.
+     * @param coordinate1, the y and x coordinates of the first object.
+     * @param coordinate2, the y and x coordinates of the second object.
+     * @return true if the two objects overlap, false otherwise.
+     */
+    static boolean hitboxOverlap(int[] coordinate1, int[] coordinate2) {
+<span class="nc bnc" id="L23" title="All 4 branches missed.">        return _hitboxOverlap(coordinate1, coordinate2) || _hitboxOverlap(coordinate2, coordinate1);</span>
+    }
+
+    /**
+     * A helper function for hitboxOverlap.
+     * @param coordinate1, the y and x coordinates of the first object.
+     * @param coordinate2, the y and x coordinates of the second object.
+     * @return true if coordinate 2 overlaps with coordinate 1, false otherwise.
+     */
+    static boolean _hitboxOverlap(int[] coordinate1, int[] coordinate2) {
+<span class="nc" id="L33">        int y1 = coordinate1[0]; int x1 = coordinate1[1];</span>
+<span class="nc" id="L34">        int y2 = coordinate2[0]; int x2 = coordinate2[1];</span>
+<span class="nc bnc" id="L35" title="All 8 branches missed.">        return  (y2 &gt;= y1 &amp;&amp; y2 &lt;= (y1 + BLOCK_MODIFIER)) &amp;&amp;</span>
+                (x2 &gt;= x1 &amp;&amp; x2 &lt;= (x1 + BLOCK_MODIFIER));
+    }
+
+    /**
+     * Calls the wizard's tick method to update the wizard's position and to create fireballs.
+     * @param app, the main application.
+     */
     static void wizardLogic(App app) {
-<span class="nc" id="L9">        app.wizard.tick(app.grid, app.fireBalls);</span>
-<span class="nc" id="L10">    }</span>
+<span class="nc" id="L44">        app.wizard.tick(app.grid, app.fireBalls);</span>
+<span class="nc" id="L45">    }</span>
 
+    /**
+     * Calls the gremlin's tick method to update the gremlin's position and to create slimeballs.
+     * Unfreezes the gremlin's if it has been frozen for the required amount of time. If the gremlin contacts
+     * the wizard the level restarts with one less life.
+     * @param app, the main application.
+     */
     static void gremlinLogic(App app) {
-<span class="nc bnc" id="L13" title="All 2 branches missed.">        if (app.currentTimeFrozen &gt;= app.totalTimeFrozen) {</span>
-<span class="nc" id="L14">            unFreezeGremlins(app);</span>
-<span class="nc" id="L15">            System.out.println(&quot;YO&quot;);</span>
-        }
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (app.currentTimeFrozen &gt;= app.totalTimeFrozen)</span>
+<span class="nc" id="L55">            unFreezeGremlins(app);</span>
 
-<span class="nc bnc" id="L18" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins) {</span>
-<span class="nc" id="L19">            gremlin.tick(app.grid, app.slimeBalls, app.fireBalls, app.wizard);</span>
-<span class="nc bnc" id="L20" title="All 2 branches missed.">            if (Helper.collisionDetector(gremlin.getCoords(), app.wizard.getCoords())) {</span>
-<span class="nc" id="L21">                app.lives--;</span>
-<span class="nc" id="L22">                SetupGame.loadObjects(app);</span>
-<span class="nc" id="L23">                break;</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins) {</span>
+<span class="nc" id="L58">            gremlin.tick(app.grid, app.slimeBalls, app.fireBalls, app.wizard);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (hitboxOverlap(gremlin.getCoords(), app.wizard.getCoords())) {</span>
+<span class="nc" id="L60">                app.lives--;</span>
+<span class="nc" id="L61">                SetupGame.loadObjects(app);</span>
+<span class="nc" id="L62">                break;</span>
             }
-<span class="nc" id="L25">        }</span>
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (app.currentTimeFrozen &gt;= 1)</span>
-<span class="nc" id="L27">            app.currentTimeFrozen++;</span>
-<span class="nc" id="L28">    }</span>
+<span class="nc" id="L64">        }</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (app.currentTimeFrozen &gt;= 1)</span>
+<span class="nc" id="L66">            app.currentTimeFrozen++;</span>
+<span class="nc" id="L67">    }</span>
 
+    /**
+     * Evaluates if a slimeball has collided with any fireball if it has then it
+     * deletes both the slimeball and the fireball from the map.
+     * @param slime, the slimeball.
+     * @param app, the main application.
+     * @return true, if the slimeball has collided with a fireball, false otherwise.
+     */
     static boolean fireSlimeCollision(SlimeBall slime, App app) {
-<span class="nc" id="L31">        boolean collision = false;</span>
-<span class="nc" id="L32">        List&lt;FireBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls)</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">            if (Helper.collisionDetector(fireBall.getCoords(), slime.getCoords())) {</span>
-<span class="nc" id="L35">                toRemove.add(fireBall);</span>
-<span class="nc" id="L36">                collision = true;</span>
+<span class="nc" id="L77">        boolean collision = false;</span>
+<span class="nc" id="L78">        List&lt;FireBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls)</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (hitboxOverlap(fireBall.getCoords(), slime.getCoords())) {</span>
+<span class="nc" id="L81">                toRemove.add(fireBall);</span>
+<span class="nc" id="L82">                collision = true;</span>
             }
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        for (FireBall fireBall : toRemove)</span>
-<span class="nc" id="L39">            app.fireBalls.remove(fireBall);</span>
-<span class="nc" id="L40">        return collision;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        for (FireBall fireBall : toRemove)</span>
+<span class="nc" id="L85">            app.fireBalls.remove(fireBall);</span>
+<span class="nc" id="L86">        return collision;</span>
     }
 
-
+    /**
+     * Peforms the logic for each slimeball. If the fireSlimeCollision method returns true then the slimeball will be removed.
+     * If the slimeballs tick method returns true it will also be removed. If there is a collision with the slimeball
+     * and the wizard then the game will restart the level will once less life.
+     * @param app, the main application.
+     */
     static void slimeBallLogic(App app) {
-<span class="nc" id="L45">        List&lt;SlimeBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (SlimeBall slimeBall : app.slimeBalls) {</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            for (int i = 0; i &lt; slimeBall.getSPEED(); i++) {</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">                if (fireSlimeCollision(slimeBall, app))</span>
-<span class="nc" id="L49">                    toRemove.add(slimeBall);</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">                if (slimeBall.tick(app.grid)) {</span>
-<span class="nc" id="L51">                    toRemove.add(slimeBall);</span>
-<span class="nc" id="L52">                    break;</span>
-                }
-<span class="nc bnc" id="L54" title="All 2 branches missed.">                if (Helper.collisionDetector(slimeBall.getCoords(), app.wizard.getCoords())) {</span>
-<span class="nc" id="L55">                    app.lives--;</span>
-<span class="nc" id="L56">                    SetupGame.loadObjects(app);</span>
-<span class="nc" id="L57">                    return;</span>
-                }
+<span class="nc" id="L96">        List&lt;SlimeBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        for (SlimeBall slimeBall : app.slimeBalls) {</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (fireSlimeCollision(slimeBall, app))</span>
+<span class="nc" id="L99">                toRemove.add(slimeBall);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (slimeBall.tick(app.grid)) {</span>
+<span class="nc" id="L101">                toRemove.add(slimeBall);</span>
+<span class="nc" id="L102">                break;</span>
             }
-<span class="nc" id="L60">        }</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (SlimeBall item : toRemove)</span>
-<span class="nc" id="L62">            app.slimeBalls.remove(item);</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (hitboxOverlap(slimeBall.getCoords(), app.wizard.getCoords())) {</span>
+<span class="nc" id="L105">                app.lives--;</span>
+<span class="nc" id="L106">                SetupGame.loadObjects(app);</span>
+<span class="nc" id="L107">                return;</span>
+            }
+<span class="nc" id="L109">        }</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (SlimeBall item : toRemove)</span>
+<span class="nc" id="L111">            app.slimeBalls.remove(item);</span>
+<span class="nc" id="L112">    }</span>
 
+    /**
+     * Performs the logic for each fireball. If the fireball's tick method does not return 0 then the fireball will be removed.
+     * If the tick method returns 2 then all the gremlins will be frozen.
+     * @param app, the main application.
+     */
     static void fireBallLogic(App app) {
-<span class="nc" id="L66">        List&lt;FireBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls) {</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">            for (int i = 0; i &lt; fireBall.getSPEED(); i++) {</span>
-<span class="nc" id="L69">                int tickVal = fireBall.tick(app.grid);</span>
-<span class="nc bnc" id="L70" title="All 2 branches missed.">                if (tickVal == 2)</span>
-<span class="nc" id="L71">                    freezeGremlins(app);</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">                if (tickVal != 0) {</span>
-<span class="nc" id="L73">                    toRemove.add(fireBall);</span>
-<span class="nc" id="L74">                    break;</span>
-                }
+<span class="nc" id="L120">        List&lt;FireBall&gt; toRemove = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls) {</span>
+<span class="nc" id="L122">            int tickVal = fireBall.tick(app.grid);</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (tickVal == 2)</span>
+<span class="nc" id="L124">                freezeGremlins(app);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if (tickVal != 0) {</span>
+<span class="nc" id="L126">                toRemove.add(fireBall);</span>
+<span class="nc" id="L127">                break;</span>
             }
-<span class="nc" id="L77">        }</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (FireBall item : toRemove)</span>
-<span class="nc" id="L79">            app.fireBalls.remove(item);</span>
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (FireBall item : toRemove)</span>
+<span class="nc" id="L131">            app.fireBalls.remove(item);</span>
+<span class="nc" id="L132">    }</span>
 
+    /**
+     * Unfreezes all the gremlins by setting their moving boolean to true. It also resets the frozen time timer.
+     * @param app, the main application.
+     */
     static void unFreezeGremlins(App app) {
-<span class="nc" id="L83">        app.currentTimeFrozen = 0;</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
-<span class="nc" id="L85">            gremlin.setMoving(true);</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L139">        app.currentTimeFrozen = 0;</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
+<span class="nc" id="L141">            gremlin.setMoving(true);</span>
+<span class="nc" id="L142">    }</span>
+
+    /**
+     * Freezes all the gremlins by setting their moving boolean to false. It sets the frozen time timer to 1.
+     * @param app, the main application.
+     */
     static void freezeGremlins(App app) {
-<span class="nc" id="L88">        app.currentTimeFrozen = 1;</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
-<span class="nc" id="L90">            gremlin.setMoving(false);</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L149">        app.currentTimeFrozen = 1;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
+<span class="nc" id="L151">            gremlin.setMoving(false);</span>
+<span class="nc" id="L152">    }</span>
 
+    /**
+     * Checks if the wizard has made contact with the powerup if it has the activatePowerup method
+     * of the wizard is called, thus increasing the wizards speed.
+     * @param app, the main application.
+     */
     static void evaluatePowerups(App app) {
-<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (PowerUpTile powerup : app.powerupTiles) {</span>
-<span class="nc bnc" id="L95" title="All 4 branches missed.">            if (!powerup.isEmpty() &amp;&amp; Helper.collisionDetector(</span>
-<span class="nc" id="L96">                    powerup.getCoords(), app.wizard.getCoords())) {</span>
-<span class="nc" id="L97">                powerup.activatePowerup(app.wizard);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        for (PowerUpTile powerup : app.powerupTiles) {</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">            if (!powerup.isEmpty() &amp;&amp; hitboxOverlap(powerup.getCoords(), app.wizard.getCoords())) {</span>
+<span class="nc" id="L162">                powerup.activatePowerup(app.wizard);</span>
             }
-<span class="nc" id="L99">        }</span>
-<span class="nc" id="L100">    }</span>
+<span class="nc" id="L164">        }</span>
+<span class="nc" id="L165">    }</span>
 
+    /**
+     * Checks if the wizard has made contact with the exit tile. If it has then the level is completed.
+     * @param app, the main application.
+     */
     static boolean checkWin(App app) {
-<span class="nc" id="L103">        return Helper.collisionDetector(</span>
-<span class="nc" id="L104">                app.wizard.getCoords(),</span>
-<span class="nc" id="L105">                app.grid.getTile(app.exitLocation[0], app.exitLocation[1]).getCoords());</span>
+<span class="nc" id="L172">        return hitboxOverlap(app.wizard.getCoords(),</span>
+<span class="nc" id="L173">                app.grid.getTile(app.exitLocation[0], app.exitLocation[1]).getCoords());</span>
     }
-
-    static void gameExecution(App app) {
-<span class="nc" id="L109">        evaluatePowerups(app);</span>
-<span class="nc" id="L110">        wizardLogic(app);</span>
-<span class="nc" id="L111">        gremlinLogic(app);</span>
-<span class="nc" id="L112">        slimeBallLogic(app);</span>
-<span class="nc" id="L113">        fireBallLogic(app);</span>
-<span class="nc" id="L114">    }</span>
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

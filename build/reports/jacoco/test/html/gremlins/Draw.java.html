@@ -3,85 +3,130 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The draw interface used by the main application.
+ * The methods take in the main application as a parameter and perform draw operations.
+ */
 public interface Draw {
-    // Ending Messages
+    /**
+     * Draws the victory message for the game.
+     * @param app, the main application
+     */
     static void drawVictory(App app) {
-<span class="nc" id="L9">        app.fill(0, 0, 0);</span>
-<span class="nc" id="L10">        app.rect(-1, -1, App.WIDTH + 2, App.HEIGHT + 2);</span>
-<span class="nc" id="L11">        Text.drawVictoryMessage(app);</span>
-<span class="nc" id="L12">    }</span>
+<span class="nc" id="L16">        app.fill(0, 0, 0);</span>
+<span class="nc" id="L17">        app.rect(-1, -1, App.WIDTH + 2, App.HEIGHT + 2);</span>
+<span class="nc" id="L18">        Text.drawVictoryMessage(app);</span>
+<span class="nc" id="L19">    }</span>
 
+    /**
+     * Draws the game over message for the game.
+     * @param app, the main application
+     */
     static void drawGameOver(App app) {
-<span class="nc" id="L15">        app.fill(0, 0, 0);</span>
-<span class="nc" id="L16">        app.rect(-1, -1, App.WIDTH + 2, App.HEIGHT + 2);</span>
-<span class="nc" id="L17">        Text.drawGameOverMessage(app);</span>
-<span class="nc" id="L18">    }</span>
+<span class="nc" id="L26">        app.fill(0, 0, 0);</span>
+<span class="nc" id="L27">        app.rect(-1, -1, App.WIDTH + 2, App.HEIGHT + 2);</span>
+<span class="nc" id="L28">        Text.drawGameOverMessage(app);</span>
+<span class="nc" id="L29">    }</span>
 
-
+    /**
+     * Draws the brown background of the game.
+     * @param app, the main application
+     */
     static void drawBackground(App app) {
-<span class="nc" id="L22">        app.fill(191, 153, 114);</span>
-<span class="nc" id="L23">        app.rect(-1, -1, App.WIDTH + 2, App.HEIGHT + 2);</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L36">        app.fill(191, 153, 114);</span>
+<span class="nc" id="L37">        app.rect(-1, -1, App.WIDTH + 2, App.HEIGHT + 2);</span>
+<span class="nc" id="L38">    }</span>
 
-
+    /**
+     * Iterates through the TileGrid of the game and draws each non-empty tile.
+     * It has the logic of updating a destroyed wall to an empty wall
+     * once the destruction sequence is complete.
+     * @param app, the main application.
+     */
     static void drawTiles(App app) {
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        for (int y = 0; y &lt; app.grid.getYLength(); y++) {</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">            for (int x = 0; x &lt; app.grid.getXLength(); x++) {</span>
-<span class="nc" id="L30">                Tile tile = app.grid.getTile(y, x);</span>
-<span class="nc" id="L31">                tile.tick();</span>
-<span class="nc bnc" id="L32" title="All 2 branches missed.">                if (!(tile.isEmpty())</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">                        &amp;&amp; tile.getName().equals(&quot;destroyed-wall&quot;)) {</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">                    if (tile.isFullyDestroyed())</span>
-<span class="nc" id="L35">                        app.grid.setTile(y, x, new EmptyTile(y, x, &quot;empty&quot;));</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        for (int y = 0; y &lt; app.grid.getYLength(); y++) {</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            for (int x = 0; x &lt; app.grid.getXLength(); x++) {</span>
+<span class="nc" id="L49">                Tile tile = app.grid.getTile(y, x);</span>
+<span class="nc" id="L50">                tile.tick();</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (!(tile.isEmpty())</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                        &amp;&amp; tile.getName().equals(&quot;destroyed-wall&quot;)) {</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">                    if (tile.isFullyDestroyed())</span>
+<span class="nc" id="L54">                        app.grid.setTile(y, x, new EmptyTile(y, x, &quot;empty&quot;));</span>
                     else
-<span class="nc" id="L37">                        tile.draw(app);</span>
+<span class="nc" id="L56">                        tile.draw(app);</span>
                 }
-<span class="nc bnc" id="L39" title="All 2 branches missed.">                else if (!tile.isEmpty())</span>
-<span class="nc" id="L40">                    tile.draw(app);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                else if (!tile.isEmpty())</span>
+<span class="nc" id="L59">                    tile.draw(app);</span>
             }
         }
-<span class="nc" id="L43">    }</span>
-
-    static void drawWizard(App app) {
-<span class="nc" id="L46">        app.wizard.draw(app);</span>
-<span class="nc" id="L47">    }</span>
-
-    static void drawGremlins(App app) {
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
-<span class="nc" id="L51">            gremlin.draw(app);</span>
-<span class="nc" id="L52">    }</span>
-
-    static void drawSlimeBalls(App app) {
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        for (SlimeBall slimeBall : app.slimeBalls)</span>
-<span class="nc" id="L56">            slimeBall.draw(app);</span>
-<span class="nc" id="L57">    }</span>
-
-    static void drawFireBalls(App app) {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls)</span>
-<span class="nc" id="L61">            fireBall.draw(app);</span>
 <span class="nc" id="L62">    }</span>
 
+    /**
+     * Draws the wizard object.
+     * @param app, the main application
+     */
+    static void drawWizard(App app) {
+<span class="nc" id="L69">        app.wizard.draw(app);</span>
+<span class="nc" id="L70">    }</span>
 
+    /**
+     * Draws the gremlin objects.
+     * @param app, the main application
+     */
+    static void drawGremlins(App app) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (Gremlin gremlin : app.gremlins)</span>
+<span class="nc" id="L78">            gremlin.draw(app);</span>
+<span class="nc" id="L79">    }</span>
+
+    /**
+     * Draws the slimeball objects.
+     * @param app, the main application
+     */
+    static void drawSlimeBalls(App app) {
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        for (SlimeBall slimeBall : app.slimeBalls)</span>
+<span class="nc" id="L87">            slimeBall.draw(app);</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Draws the fireball objects.
+     * @param app, the main application
+     */
+    static void drawFireBalls(App app) {
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        for (FireBall fireBall : app.fireBalls)</span>
+<span class="nc" id="L96">            fireBall.draw(app);</span>
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Draws the number of lives as shown by a number of wizard sprites.
+     * @param app, the main application
+     */
     static void drawTextField(App app) {
-<span class="nc" id="L66">        Text.drawLives(app, ObjectMaker.getImage(&quot;wizard1&quot;), app.lives);</span>
-<span class="nc" id="L67">        Text.drawLevel(app, app.levelNum, app.totalNumLevels);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L104">        Text.drawLives(app, ObjectMaker.getImage(&quot;wizard1&quot;), app.lives);</span>
+<span class="nc" id="L105">        Text.drawLevel(app, app.levelNum, app.totalNumLevels);</span>
+<span class="nc" id="L106">    }</span>
 
+    /**
+     * Draws the progress of the wizard cooldown.
+     * @param app, the main application
+     */
     static void drawManaBar(App app) {
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (app.wizard.isOnCooldown())</span>
-<span class="nc" id="L72">            Text.drawManaBar(app, app.wizard.getCooldownFrames(), app.wizard.getTimeInCooldown());</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (app.wizard.isOnCooldown())</span>
+<span class="nc" id="L114">            Text.drawManaBar(app, app.wizard.getCooldownFrames(), app.wizard.getTimeInCooldown());</span>
+<span class="nc" id="L115">    }</span>
 
+    /**
+     * Uses all the draw methods to draw the game.
+     * @param app, the main application.
+     */
     static void drawGame(App app) {
-<span class="nc" id="L76">        drawBackground(app);</span>
-<span class="nc" id="L77">        drawTiles(app);</span>
-<span class="nc" id="L78">        drawWizard(app);</span>
-<span class="nc" id="L79">        drawGremlins(app);</span>
-<span class="nc" id="L80">        drawSlimeBalls(app);</span>
-<span class="nc" id="L81">        drawFireBalls(app);</span>
-<span class="nc" id="L82">        drawTextField(app);</span>
-<span class="nc" id="L83">        drawManaBar(app);</span>
-<span class="nc" id="L84">    }</span>
-
+<span class="nc" id="L122">        drawBackground(app);</span>
+<span class="nc" id="L123">        drawTiles(app);</span>
+<span class="nc" id="L124">        drawWizard(app);</span>
+<span class="nc" id="L125">        drawGremlins(app);</span>
+<span class="nc" id="L126">        drawSlimeBalls(app);</span>
+<span class="nc" id="L127">        drawFireBalls(app);</span>
+<span class="nc" id="L128">        drawTextField(app);</span>
+<span class="nc" id="L129">        drawManaBar(app);</span>
+<span class="nc" id="L130">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

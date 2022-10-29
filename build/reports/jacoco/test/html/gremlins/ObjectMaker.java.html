@@ -5,67 +5,148 @@ import processing.core.PImage;
 import java.util.HashMap;
 import java.util.Map;
 
-<span class="nc" id="L8">public class ObjectMaker {</span>
-<span class="fc" id="L9">    public static Map&lt;String, PImage&gt; spritesMap = new HashMap&lt;&gt;();</span>
+/**
+ * A class used to make game objects.
+ */
+<span class="nc" id="L11">public class ObjectMaker {</span>
+    /**
+     * A Map that stores the image of each object with their corresponding name.
+     */
+<span class="nc" id="L15">    public static Map&lt;String, PImage&gt; spritesMap = new HashMap&lt;&gt;();</span>
 
-
-    /* Image Map Methods */
+    /**
+     * Adds the image of the object to the spritesMap.
+     * @param name, the name of the object.
+     * @param image, the image of the object.
+     */
     public static void addToImageMap(String name, PImage image) {
-<span class="nc" id="L14">        spritesMap.put(name, image);</span>
-<span class="nc" id="L15">    }</span>
+<span class="nc" id="L23">        spritesMap.put(name, image);</span>
+<span class="nc" id="L24">    }</span>
 
+    /**
+     * Returns the image of the object passed in.
+     * @param imageName, the name of the object.
+     * @return the PImage of the object.
+     */
     public static PImage getImage(String imageName) {
-<span class="nc" id="L18">        return spritesMap.get(imageName);</span>
+<span class="nc" id="L32">        return spritesMap.get(imageName);</span>
     }
 
-    /* Making Tiles */
+    /**
+     * Creates a new Brickwall object.
+     * @param y, the y coordinate of the brickwall.
+     * @param x, the x coordinate of the brickwall.
+     * @return the new Brickwall object made with the parameters and the image stored in the spritesMap.
+     */
     public static Wall makeBrickwall(int y, int x) {
-<span class="fc" id="L23">        return new Wall(y, x, &quot;brickwall&quot;, spritesMap.get(&quot;brickwall&quot;));</span>
+<span class="nc" id="L42">        return new Wall(y, x, &quot;brickwall&quot;, spritesMap.get(&quot;brickwall&quot;));</span>
     }
 
+    /**
+     * Creates a new Stonewall object.
+     * @param y, the y coordinate of the stonewall.
+     * @param x, the x coordinate of the stonewall.
+     * @return the new Stonewall object made with the parameters and the image stored in the spritesMap.
+     */
     public static Wall makeStonewall(int y, int x) {
-<span class="fc" id="L27">        return new Wall(y, x, &quot;stonewall&quot;, spritesMap.get(&quot;stonewall&quot;));</span>
+<span class="nc" id="L52">        return new Wall(y, x, &quot;stonewall&quot;, spritesMap.get(&quot;stonewall&quot;));</span>
     }
 
-<span class="fc" id="L30">    public static Wall makeFrozenwall(int y, int x) {return new Wall(y, x, &quot;frozenwall&quot;, spritesMap.get(&quot;frozenwall&quot;));</span>
+    /**
+     * Creates a new Frozenwall object.
+     * @param y, the y coordinate of the frozenwall.
+     * @param x, the x coordinate of the frozenwall.
+     * @return the new Frozenwall object made with the parameters and the image stored in the spritesMap.
+     * */
+<span class="nc" id="L61">    public static Wall makeFrozenwall(int y, int x) {return new Wall(y, x, &quot;frozenwall&quot;, spritesMap.get(&quot;frozenwall&quot;));</span>
     }
 
+    /**
+     * Creates a new EmptyTile object.
+     * @param y, the y coordinate of the emptytile.
+     * @param x, the x coordinate of the emptytile.
+     * @return the new EmptyTile object made with the parameters and the image stored in the spritesMap.
+     */
     public static EmptyTile makeEmptyTile(int y, int x){
-<span class="fc" id="L34">        return new EmptyTile(y, x, &quot;empty&quot;);</span>
+<span class="nc" id="L71">        return new EmptyTile(y, x, &quot;empty&quot;);</span>
     }
 
+    /**
+     * Creates a new Door object.
+     * @param y, the y coordinate of the door.
+     * @param x, the x coordinate of the door.
+     * @return the new Door object made with the parameters and the image stored in the spritesMap.
+     */
     public static Wall makeDoor(int y, int x) {
-<span class="nc" id="L38">        return new Wall(y, x, &quot;door&quot;, spritesMap.get(&quot;door&quot;));</span>
+<span class="nc" id="L81">        return new Wall(y, x, &quot;door&quot;, spritesMap.get(&quot;door&quot;));</span>
     }
 
+    /**
+     * Creates a new DestroyedWall object.
+     * @param y, the y coordinate of the destroyedwall.
+     * @param x, the x coordinate of the destroyedwall.
+     * @return the new DestroyedWall object made with the parameters and the image stored in the spritesMap.
+     */
     public static DestroyedWall makeDestroyedWall(int y, int x) {
-<span class="fc" id="L42">        return new DestroyedWall(y, x, &quot;destroyed-wall&quot;, new PImage[] {</span>
-<span class="fc" id="L43">                spritesMap.get(&quot;brickwall_destroyed0&quot;), spritesMap.get(&quot;brickwall_destroyed1&quot;),</span>
-<span class="fc" id="L44">                spritesMap.get(&quot;brickwall_destroyed2&quot;), spritesMap.get(&quot;brickwall_destroyed3&quot;)});</span>
+<span class="nc" id="L91">        return new DestroyedWall(y, x, &quot;destroyed-wall&quot;, new PImage[] {</span>
+<span class="nc" id="L92">                spritesMap.get(&quot;brickwall_destroyed0&quot;), spritesMap.get(&quot;brickwall_destroyed1&quot;),</span>
+<span class="nc" id="L93">                spritesMap.get(&quot;brickwall_destroyed2&quot;), spritesMap.get(&quot;brickwall_destroyed3&quot;)});</span>
     }
 
+    /**
+     * Creates a new PowerUp object.
+     * @param y, the y coordinate of the powerup.
+     * @param x, the x coordinate of the powerup.
+     * @return the new PowerUp object made with the parameters and the image stored in the spritesMap.
+     */
     public static PowerUpTile makePowerUpTile(int y, int x) {
-<span class="fc" id="L48">        return new PowerUpTile(y, x, &quot;powerup&quot;, spritesMap.get(&quot;powerup&quot;));</span>
+<span class="nc" id="L103">        return new PowerUpTile(y, x, &quot;powerup&quot;, spritesMap.get(&quot;powerup&quot;));</span>
     }
 
-
-    /* Making Movables */
+    /**
+     * Creates a new Gremlin object.
+     * @param y, the y coordinate of the gremlin.
+     * @param x, the x coordinate of the gremlin.
+     * @param cooldownDouble, the cooldown in double of the slime shooting rate.
+     * @return the new Gremlin object made with the parameters and the image stored in the spritesMap.
+     */
     public static Gremlin makeGremlin(int y, int x, double cooldownDouble) {
-<span class="nc" id="L54">        return new Gremlin(y, x, cooldownDouble, spritesMap.get(&quot;gremlin&quot;));</span>
+<span class="nc" id="L114">        return new Gremlin(y, x, cooldownDouble, spritesMap.get(&quot;gremlin&quot;));</span>
     }
 
+    /**
+     * Creates a new Wizard object.
+     * @param y, the y coordinate of the wizard.
+     * @param x, the x coordinate of the wizard.
+     * @param cooldownDouble, the cooldown in double of the fireball recharge time.
+     * @return the new Wizard object made with the parameters and the image stored in the spritesMap.
+     */
     public static Wizard makeWizard(int y, int x, double cooldownDouble) {
-<span class="fc" id="L58">        return new Wizard(y, x, cooldownDouble, new PImage[] {</span>
-<span class="fc" id="L59">                spritesMap.get(&quot;wizard0&quot;), spritesMap.get(&quot;wizard1&quot;),</span>
-<span class="fc" id="L60">                spritesMap.get(&quot;wizard2&quot;), spritesMap.get(&quot;wizard3&quot;)});</span>
+<span class="nc" id="L125">        return new Wizard(y, x, cooldownDouble, new PImage[] {</span>
+<span class="nc" id="L126">                spritesMap.get(&quot;wizard0&quot;), spritesMap.get(&quot;wizard1&quot;),</span>
+<span class="nc" id="L127">                spritesMap.get(&quot;wizard2&quot;), spritesMap.get(&quot;wizard3&quot;)});</span>
     }
 
+    /**
+     * Creates a new SlimeBall object.
+     * @param y, the y coordinate of the slimeBall.
+     * @param x, the x coordinate of the slimeBall.
+     * @param direction, the direction of the slimeBall.
+     * @return the new Slime object made with the parameters and the image stored in the spritesMap.
+     */
     public static SlimeBall makeSlimeBall(int y, int x, int direction) {
-<span class="fc" id="L64">        return new SlimeBall(y, x, direction, spritesMap.get(&quot;slime&quot;));</span>
+<span class="nc" id="L138">        return new SlimeBall(y, x, direction, spritesMap.get(&quot;slime&quot;));</span>
     }
 
+    /**
+     * Creates a new Fireball object.
+     * @param y, the y coordinate of the fireball.
+     * @param x, the x coordinate of the fireball.
+     * @param direction, the direction of the fireball.
+     * @return the new Fireball object made with the parameters and the image stored in the spritesMap.
+     */
     public static FireBall makeFireBall(int y, int x, int direction) {
-<span class="fc" id="L68">        return new FireBall(y, x, direction, spritesMap.get(&quot;fireball&quot;));</span>
+<span class="nc" id="L149">        return new FireBall(y, x, direction, spritesMap.get(&quot;fireball&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

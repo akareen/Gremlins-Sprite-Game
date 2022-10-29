@@ -222,6 +222,7 @@ public class App extends PApplet {
 
     /**
      * Draw all elements in the game by current frame.
+     * Uses the logic methods from the GameLogic interface and uses the draw methods from the Draw interface.
      */
     public void draw() {
         if (this.levelNum > totalNumLevels)
@@ -229,8 +230,23 @@ public class App extends PApplet {
         else if (this.lives <= 0)
             Draw.drawGameOver(this);
         else {
-            GameLogic.gameExecution(this);
-            Draw.drawGame(this);
+            Draw.drawBackground(this);
+            Draw.drawTiles(this);
+            GameLogic.evaluatePowerups(this);
+            for (int i = 0; i < this.wizard.speed; i++) {
+                GameLogic.wizardLogic(this);
+                Draw.drawWizard(this);
+            }
+            GameLogic.gremlinLogic(this);
+            Draw.drawGremlins(this);
+            for (int i = 0; i < MovingBall.SPEED; i++) {
+                GameLogic.fireBallLogic(this);
+                Draw.drawFireBalls(this);
+                GameLogic.slimeBallLogic(this);
+                Draw.drawSlimeBalls(this);
+            }
+            Draw.drawTextField(this);
+            Draw.drawManaBar(this);
             if (GameLogic.checkWin(this)) {
                 this.levelNum++;
                 if (this.levelNum <= totalNumLevels)

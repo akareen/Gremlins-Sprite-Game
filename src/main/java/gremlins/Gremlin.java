@@ -106,7 +106,7 @@ public class Gremlin extends Movable {
         if (validMoves.size() == 1)
             return validMoves.get(0);
         if (validMoves.size() > 1) {
-            validMoves.remove(Integer.valueOf(Helper.oppositeDirection(direction)));
+            validMoves.remove(Integer.valueOf(oppositeDirection()));
             return validMoves.get(new Random().nextInt(validMoves.size()));
         }
         return super.direction;
@@ -120,7 +120,7 @@ public class Gremlin extends Movable {
      */
     private boolean contactFireballs(List<FireBall> fireBalls) {
         for (FireBall fireBall : fireBalls)
-            if (Helper.collisionDetector(super.getCoords(), fireBall.getCoords())) {
+            if (GameLogic.hitboxOverlap(super.getCoords(), fireBall.getCoords())) {
                 fireBalls.remove(fireBall);
                 return true;
             }
@@ -142,5 +142,19 @@ public class Gremlin extends Movable {
      */
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+
+    /**
+     * Returns the opposite direction of the direction the gremlin is currently facing.
+     * @return int, the opposite direction of the gremlin.
+     */
+    protected int oppositeDirection() {
+        int[] dir = {0, 1, 2, 3};
+        int[] opp = {1, 0, 3, 2};
+        for (int i = 0; i < dir.length; i++)
+            if (dir[i] == super.direction)
+                return opp[i];
+        return 0;
     }
 }

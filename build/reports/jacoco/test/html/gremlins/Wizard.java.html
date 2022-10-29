@@ -10,22 +10,22 @@ public class Wizard extends Movable {
     private final PImage[] spriteArray;
     protected int cooldownFrames;
     //Dynamic
-<span class="fc" id="L13">    private boolean moving = false;</span>
-<span class="fc" id="L14">    protected boolean futureMoving = false;</span>
+<span class="nc" id="L13">    private boolean moving = false;</span>
+<span class="nc" id="L14">    protected boolean futureMoving = false;</span>
     protected int futureDirection;
-<span class="fc" id="L16">    protected int speed = 2; // Can be changed by Powerup</span>
+<span class="nc" id="L16">    protected int speed = 2; // Can be changed by Powerup</span>
     //Fireball Related
-<span class="fc" id="L18">    protected int timeInCooldown = 0;</span>
-<span class="fc" id="L19">    protected boolean onCooldown = false;</span>
-<span class="fc" id="L20">    protected boolean shooting = false;</span>
+<span class="nc" id="L18">    protected int timeInCooldown = 0;</span>
+<span class="nc" id="L19">    protected boolean onCooldown = false;</span>
+<span class="nc" id="L20">    protected boolean shooting = false;</span>
 
 
     public Wizard(int y, int x, double cooldownDouble, PImage[] spriteArray) {
-<span class="fc" id="L24">        super(y, x, 3);</span>
-<span class="fc" id="L25">        this.cooldownFrames = (int) (cooldownDouble * 60);</span>
-<span class="fc" id="L26">        this.spriteArray = spriteArray;</span>
-<span class="fc" id="L27">        futureDirection = super.direction;</span>
-<span class="fc" id="L28">    }</span>
+<span class="nc" id="L24">        super(y, x, 3);</span>
+<span class="nc" id="L25">        this.cooldownFrames = (int) (cooldownDouble * 60);</span>
+<span class="nc" id="L26">        this.spriteArray = spriteArray;</span>
+<span class="nc" id="L27">        futureDirection = super.direction;</span>
+<span class="nc" id="L28">    }</span>
 
     // Executed every frame
     public void tick(TileGrid grid, List&lt;FireBall&gt; fireBalls) {
@@ -34,76 +34,74 @@ public class Wizard extends Movable {
         //Shooting the Fireball
 <span class="nc" id="L35">        shootFireball(fireBalls);</span>
         //Repeat based on speed
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        for (int i = 0; i &lt; this.speed; i++) {</span>
-            //When the Player is On a Block
-<span class="nc bnc" id="L39" title="All 4 branches missed.">            if (super.y % 20 == 0 &amp;&amp; super.x % 20 == 0) {</span>
-<span class="nc" id="L40">                this.moving = futureMoving;</span>
-<span class="nc" id="L41">                super.direction = futureDirection;</span>
-                //LOGIC
-<span class="nc bnc" id="L43" title="All 4 branches missed.">                if (moving &amp;&amp; super.movingIntoWall(grid))</span>
-<span class="nc" id="L44">                    moving = false;</span>
-            }
-<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (moving)</span>
-<span class="nc" id="L47">                super.changePosition();</span>
+        //When the Player is On a Block
+<span class="nc bnc" id="L38" title="All 4 branches missed.">        if (super.y % 20 == 0 &amp;&amp; super.x % 20 == 0) {</span>
+<span class="nc" id="L39">            this.moving = futureMoving;</span>
+<span class="nc" id="L40">            super.direction = futureDirection;</span>
+            //LOGIC
+<span class="nc bnc" id="L42" title="All 4 branches missed.">            if (moving &amp;&amp; super.movingIntoWall(grid))</span>
+<span class="nc" id="L43">                moving = false;</span>
         }
-<span class="nc" id="L49">    }</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (moving)</span>
+<span class="nc" id="L46">            super.changePosition();</span>
+<span class="nc" id="L47">    }</span>
 
     public void draw(PApplet app) {
-<span class="nc" id="L52">        app.image(spriteArray[this.direction], super.x, super.y);</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L50">        app.image(spriteArray[this.direction], super.x, super.y);</span>
+<span class="nc" id="L51">    }</span>
 
 
     // SHOOTING METHODS
     public void initiateShoot() {
-<span class="fc" id="L58">        this.shooting = true;</span>
-<span class="fc" id="L59">    }</span>
+<span class="nc" id="L56">        this.shooting = true;</span>
+<span class="nc" id="L57">    }</span>
 
     // If the Wizard is on cooldown increments its timer, if it has spent
     // required time in cooldown takes it off cooldown
     protected void updateCooldowns() {
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (this.onCooldown) {</span>
-<span class="fc" id="L65">            this.timeInCooldown++;</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (this.timeInCooldown &gt;= cooldownFrames) {</span>
-<span class="fc" id="L67">                this.timeInCooldown = 0;</span>
-<span class="fc" id="L68">                this.onCooldown = false;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (this.onCooldown) {</span>
+<span class="nc" id="L63">            this.timeInCooldown++;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (this.timeInCooldown &gt;= cooldownFrames) {</span>
+<span class="nc" id="L65">                this.timeInCooldown = 0;</span>
+<span class="nc" id="L66">                this.onCooldown = false;</span>
             }
         }
-<span class="fc" id="L71">    }</span>
+<span class="nc" id="L69">    }</span>
 
     // If able to shoots then it shoots a fireball from the wizard by
     // adding to the fireBalls list
     protected void shootFireball(List&lt;FireBall&gt; fireBalls) {
-<span class="pc bpc" id="L76" title="2 of 4 branches missed.">        if (this.shooting &amp;&amp; !this.onCooldown) {</span>
-<span class="fc" id="L77">            fireBalls.add(ObjectMaker.makeFireBall(super.y, super.x, this.direction));</span>
-<span class="fc" id="L78">            this.onCooldown = true;</span>
-<span class="fc" id="L79">            this.shooting = false;</span>
+<span class="nc bnc" id="L74" title="All 4 branches missed.">        if (this.shooting &amp;&amp; !this.onCooldown) {</span>
+<span class="nc" id="L75">            fireBalls.add(ObjectMaker.makeFireBall(super.y, super.x, this.direction));</span>
+<span class="nc" id="L76">            this.onCooldown = true;</span>
+<span class="nc" id="L77">            this.shooting = false;</span>
         }
-<span class="fc" id="L81">    }</span>
+<span class="nc" id="L79">    }</span>
 
     // GETTERS AND SETTERS
     public int getCooldownFrames() {
-<span class="fc" id="L85">        return this.cooldownFrames;</span>
+<span class="nc" id="L83">        return this.cooldownFrames;</span>
     }
 
     public int getTimeInCooldown() {
-<span class="fc" id="L89">        return this.timeInCooldown;</span>
+<span class="nc" id="L87">        return this.timeInCooldown;</span>
     }
 
     public boolean isOnCooldown() {
-<span class="fc" id="L93">        return this.onCooldown;</span>
+<span class="nc" id="L91">        return this.onCooldown;</span>
     }
 
     public void setSpeed(int speed) {
-<span class="fc" id="L97">        this.speed = speed;</span>
-<span class="fc" id="L98">    }</span>
+<span class="nc" id="L95">        this.speed = speed;</span>
+<span class="nc" id="L96">    }</span>
 
     public void setFutureDirection(int directionChoice) {
-<span class="fc" id="L101">        this.futureDirection = directionChoice;</span>
-<span class="fc" id="L102">    }</span>
+<span class="nc" id="L99">        this.futureDirection = directionChoice;</span>
+<span class="nc" id="L100">    }</span>
 
     public void setFutureMoving(boolean futureMoving) {
-<span class="fc" id="L105">        this.futureMoving = futureMoving;</span>
-<span class="fc" id="L106">    }</span>
+<span class="nc" id="L103">        this.futureMoving = futureMoving;</span>
+<span class="nc" id="L104">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

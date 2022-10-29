@@ -7,157 +7,260 @@ import processing.data.JSONArray;
 import java.util.*;
 import java.io.*;
 
+/**
+ * The main application class.
+ */
 public class App extends PApplet {
-    //Final Size Values
+    /**
+     * The width of the window
+     */
     protected static final int WIDTH = 720;
+    /**
+     * The height of the window
+     */
     protected static final int HEIGHT = 720;
+    /**
+     * Frames per second
+     */
     private static final int FPS = 60;
 
-    //Loaded data from the config file
+
+    /**
+     * Path to the config.json file
+     */
     private final String configPath;
+    /**
+     * For each level stores the level.txt file, the gremlin cooldown and the wizard cooldown
+     */
     Map&lt;Integer, Map&lt;String, String&gt;&gt; levelsMap;
 
-    /* FOR ALL LEVELS */
+
+    /**
+     * Total number of levels for the game
+     */
     protected int totalNumLevels;
-<span class="fc" id="L22">    protected int levelNum = 1;</span>
-
-    /* FOR THE CURRENT LEVEL */
-    //Static
+    /**
+     * Current level of the game
+     */
+<span class="nc" id="L45">    protected int levelNum = 1;</span>
+    /**
+     * The current level text file
+     */
     protected String layoutFile;
+    /**
+     * A multi-dimensional string array that stores the layout of the current level.
+     * Every row represents a line read from the level text file.
+     * Every column represents a character in the line.
+     */
     protected String[][] tileLetterConfiguration;
+    /**
+     * Stores the locations for all game objects.
+     * The String is the name of the object.
+     * The ArrayList is a list of all the locations of the object.
+     */
     protected Map&lt;String, List&lt;Integer[]&gt;&gt; assetLocations;
+    /**
+     * The location of the exit door.
+     */
     protected int[] exitLocation;
-<span class="fc" id="L30">    protected final int totalTimeFrozen = 6 * 60;</span>
-
-    //Dynamic
-    protected int lives;
+    /**
+     * The total time in frames for the Gremlins to be frozen when the frozen tile powerup is activated.
+     */
+<span class="nc" id="L69">    protected final int totalTimeFrozen = 6 * 60;</span>
+    /**
+     * The total number of lives in the game
+     */
     protected int TOTALLIVES;
-    protected Wizard wizard;
-    protected List&lt;Gremlin&gt; gremlins;
-    protected List&lt;SlimeBall&gt; slimeBalls;
-    protected List&lt;FireBall&gt; fireBalls;
-    protected List&lt;PowerUpTile&gt; powerupTiles;
-<span class="fc" id="L40">    protected int currentTimeFrozen = 0;</span>
 
-    protected double wizardCooldown, enemyCooldown;
+
+    /**
+     * The current number of lives in the game
+     */
+    protected int lives;
+    /**
+     * The Wizard object
+     */
+    protected Wizard wizard;
+    /**
+     * The list of Gremlin objects
+     */
+    protected List&lt;Gremlin&gt; gremlins;
+    /**
+     * The list of SlimeBall objects
+     */
+    protected List&lt;SlimeBall&gt; slimeBalls;
+    /**
+     * The list of FireBall objects
+     */
+    protected List&lt;FireBall&gt; fireBalls;
+    /**
+     * The list of Powerup objects
+     */
+    protected List&lt;PowerUpTile&gt; powerupTiles;
+    /**
+     * The total amount of frames that the Gremlins have been frozen for
+     */
+<span class="nc" id="L103">    protected int currentTimeFrozen = 0;</span>
+
+    /**
+     * The fireball cooldown for the Wizard
+      */
+    protected double wizardCooldown;
+    /** The slimeball cooldown for all the Gremlins
+     */
+    protected double enemyCooldown;
+    /**
+     * A 33x36 Tile array that stores tile objects for every 20x20 pixel tile in the game.
+     */
     protected TileGrid grid;
 
-
-<span class="fc" id="L46">    public App() {</span>
-<span class="fc" id="L47">        this.configPath = &quot;config.json&quot;;</span>
-<span class="fc" id="L48">    }</span>
+    /**
+     * The Constructor of the app class, which initializes the configPath.
+     */
+<span class="nc" id="L120">    public App() {</span>
+<span class="nc" id="L121">        this.configPath = &quot;config.json&quot;;</span>
+<span class="nc" id="L122">    }</span>
 
     /**
      * Initialise the setting of the window size.
      */
     public void settings() {
-<span class="nc" id="L54">        size(WIDTH, HEIGHT);</span>
-<span class="nc" id="L55">    }</span>
+<span class="nc" id="L128">        size(WIDTH, HEIGHT);</span>
+<span class="nc" id="L129">    }</span>
 
     /**
      * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
      */
     public void setup() {
         //Setup 60 frames a second
-<span class="nc" id="L62">        frameRate(FPS);</span>
-<span class="nc" id="L63">        loadImages();</span>
-<span class="nc" id="L64">        readJSON();</span>
-<span class="nc" id="L65">        SetupGame.loadLevel(this, levelNum);</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L136">        frameRate(FPS);</span>
+<span class="nc" id="L137">        loadImages();</span>
+<span class="nc" id="L138">        readJSON();</span>
+<span class="nc" id="L139">        SetupGame.loadLevel(this, levelNum);</span>
+<span class="nc" id="L140">    }</span>
 
+    /**
+     * Loads all the images from the resources folder into the ObjectMaker class.
+     */
     private void loadImages() {
-<span class="nc" id="L69">        String[] imageNames = {&quot;brickwall&quot;,  &quot;brickwall_destroyed0&quot;, &quot;brickwall_destroyed1&quot;, &quot;brickwall_destroyed2&quot;,</span>
+<span class="nc" id="L146">        String[] imageNames = {&quot;brickwall&quot;,  &quot;brickwall_destroyed0&quot;, &quot;brickwall_destroyed1&quot;, &quot;brickwall_destroyed2&quot;,</span>
                 &quot;brickwall_destroyed3&quot;, &quot;door&quot;, &quot;fireball&quot;, &quot;frozenwall&quot;, &quot;gremlin&quot;, &quot;powerup&quot;, &quot;slime&quot;, &quot;stonewall&quot;, 
                 &quot;wizard0&quot;, &quot;wizard1&quot;, &quot;wizard2&quot;, &quot;wizard3&quot;
         };
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        for (String name : imageNames)</span>
-<span class="nc" id="L74">            ObjectMaker.addToImageMap(name, loadImage(Objects.requireNonNull(</span>
-<span class="nc" id="L75">                    this.getClass().getResource(name + &quot;.png&quot;))</span>
-<span class="nc" id="L76">                    .getPath().replace(&quot;%20&quot;, &quot; &quot;)));</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        for (String name : imageNames)</span>
+<span class="nc" id="L151">            ObjectMaker.addToImageMap(name, loadImage(Objects.requireNonNull(</span>
+<span class="nc" id="L152">                    this.getClass().getResource(name + &quot;.png&quot;))</span>
+<span class="nc" id="L153">                    .getPath().replace(&quot;%20&quot;, &quot; &quot;)));</span>
+<span class="nc" id="L154">    }</span>
 
+    /**
+     * Reads the config.json file and stores the information in the levelsMap. Sets the total number of levels.
+     */
     private void readJSON() {
-<span class="nc" id="L80">        JSONObject config = loadJSONObject(new File(this.configPath));</span>
-<span class="nc" id="L81">        this.TOTALLIVES = (int) config.get(&quot;lives&quot;);</span>
-<span class="nc" id="L82">        this.lives = TOTALLIVES;</span>
+<span class="nc" id="L160">        JSONObject config = loadJSONObject(new File(this.configPath));</span>
+<span class="nc" id="L161">        this.TOTALLIVES = (int) config.get(&quot;lives&quot;);</span>
+<span class="nc" id="L162">        this.lives = TOTALLIVES;</span>
 
-<span class="nc" id="L84">        JSONArray levels = (JSONArray) config.get(&quot;levels&quot;);</span>
-<span class="nc" id="L85">        Map&lt;Integer, Map&lt;String, String&gt;&gt; levelsMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L164">        JSONArray levels = (JSONArray) config.get(&quot;levels&quot;);</span>
+<span class="nc" id="L165">        Map&lt;Integer, Map&lt;String, String&gt;&gt; levelsMap = new HashMap&lt;&gt;();</span>
 
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        for (int i = 0; i &lt; levels.size(); i++) {</span>
-<span class="nc" id="L88">            JSONObject level = (JSONObject) levels.get(i);</span>
-<span class="nc" id="L89">            Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        for (int i = 0; i &lt; levels.size(); i++) {</span>
+<span class="nc" id="L168">            JSONObject level = (JSONObject) levels.get(i);</span>
+<span class="nc" id="L169">            Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
             
-<span class="nc" id="L91">            map.put(&quot;layout&quot;, (String) level.get(&quot;layout&quot;));</span>
-<span class="nc" id="L92">            map.put(&quot;wizard_cooldown&quot;, &quot;&quot; + level.get(&quot;wizard_cooldown&quot;));</span>
-<span class="nc" id="L93">            map.put(&quot;enemy_cooldown&quot;, &quot;&quot; + level.get(&quot;enemy_cooldown&quot;));</span>
+<span class="nc" id="L171">            map.put(&quot;layout&quot;, (String) level.get(&quot;layout&quot;));</span>
+<span class="nc" id="L172">            map.put(&quot;wizard_cooldown&quot;, &quot;&quot; + level.get(&quot;wizard_cooldown&quot;));</span>
+<span class="nc" id="L173">            map.put(&quot;enemy_cooldown&quot;, &quot;&quot; + level.get(&quot;enemy_cooldown&quot;));</span>
             
-<span class="nc" id="L95">            levelsMap.put(i + 1, map);</span>
+<span class="nc" id="L175">            levelsMap.put(i + 1, map);</span>
         }
-<span class="nc" id="L97">        this.levelsMap = levelsMap;</span>
-<span class="nc" id="L98">        this.totalNumLevels = levelsMap.size();</span>
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L177">        this.levelsMap = levelsMap;</span>
+<span class="nc" id="L178">        this.totalNumLevels = levelsMap.size();</span>
+<span class="nc" id="L179">    }</span>
 
     /**
      * Receive key pressed signal from the keyboard.
      */
     public void keyPressed() {
-<span class="nc bnc" id="L105" title="All 4 branches missed.">        if (gameOver() &amp;&amp; key == ENTER) { //Enter pressed</span>
-<span class="nc" id="L106">            this.lives = TOTALLIVES;</span>
-<span class="nc" id="L107">            this.levelNum = 1;</span>
-<span class="nc" id="L108">            SetupGame.loadLevel(this, levelNum);</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">        if (gameOver() &amp;&amp; key == ENTER) { //Enter pressed</span>
+<span class="nc" id="L186">            this.lives = TOTALLIVES;</span>
+<span class="nc" id="L187">            this.levelNum = 1;</span>
+<span class="nc" id="L188">            SetupGame.loadLevel(this, levelNum);</span>
         }
-<span class="nc" id="L110">        int[] codes = {LEFT, RIGHT, UP, DOWN};</span>
-<span class="nc" id="L111">        int[] directions = {0, 1, 2, 3};</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">        for (int i = 0; i &lt; codes.length; i++)</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (keyCode == codes[i]) {</span>
-<span class="nc" id="L114">                wizard.setFutureMoving(true);</span>
-<span class="nc" id="L115">                wizard.setFutureDirection(directions[i]);</span>
-<span class="nc" id="L116">                break;</span>
+<span class="nc" id="L190">        int[] codes = {LEFT, RIGHT, UP, DOWN};</span>
+<span class="nc" id="L191">        int[] directions = {0, 1, 2, 3};</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        for (int i = 0; i &lt; codes.length; i++)</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            if (keyCode == codes[i]) {</span>
+<span class="nc" id="L194">                wizard.setFutureMoving(true);</span>
+<span class="nc" id="L195">                wizard.setFutureDirection(directions[i]);</span>
+<span class="nc" id="L196">                break;</span>
             }
-<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (keyCode == 32) //SPACE BAR</span>
-<span class="nc" id="L119">            wizard.initiateShoot();</span>
-<span class="nc" id="L120">    }</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (keyCode == 32) //SPACE BAR</span>
+<span class="nc" id="L199">            wizard.initiateShoot();</span>
+<span class="nc" id="L200">    }</span>
 
     /**
      * Receive key released signal from the keyboard.
      */
     public void keyReleased(){
-<span class="nc" id="L126">        int[] codes = {LEFT, RIGHT, UP, DOWN};</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (int code : codes)</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (keyCode == code) {</span>
-<span class="nc" id="L129">                wizard.setFutureMoving(false);</span>
-<span class="nc" id="L130">                break;</span>
+<span class="nc" id="L206">        int[] codes = {LEFT, RIGHT, UP, DOWN};</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        for (int code : codes)</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (keyCode == code) {</span>
+<span class="nc" id="L209">                wizard.setFutureMoving(false);</span>
+<span class="nc" id="L210">                break;</span>
             }
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L212">    }</span>
 
+    /**
+     * If there are no lives left or the total number of levels has been exceeded, the game is over.
+     * @return boolean true if the game is over, false otherwise
+     */
     private boolean gameOver() {
-<span class="nc bnc" id="L135" title="All 4 branches missed.">        return this.lives &lt;= 0 || this.levelNum &gt; this.totalNumLevels;</span>
+<span class="nc bnc" id="L219" title="All 4 branches missed.">        return this.lives &lt;= 0 || this.levelNum &gt; this.totalNumLevels;</span>
     }
 
 
     /**
      * Draw all elements in the game by current frame.
+     * Uses the logic methods from the GameLogic interface and uses the draw methods from the Draw interface.
      */
     public void draw() {
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (this.levelNum &gt; totalNumLevels)</span>
-<span class="nc" id="L144">            Draw.drawVictory(this);</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        else if (this.lives &lt;= 0)</span>
-<span class="nc" id="L146">            Draw.drawGameOver(this);</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (this.levelNum &gt; totalNumLevels)</span>
+<span class="nc" id="L229">            Draw.drawVictory(this);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        else if (this.lives &lt;= 0)</span>
+<span class="nc" id="L231">            Draw.drawGameOver(this);</span>
         else {
-<span class="nc" id="L148">            GameLogic.gameExecution(this);</span>
-<span class="nc" id="L149">            Draw.drawGame(this);</span>
-<span class="nc bnc" id="L150" title="All 2 branches missed.">            if (GameLogic.checkWin(this)) {</span>
-<span class="nc" id="L151">                this.levelNum++;</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">                if (this.levelNum &lt;= totalNumLevels)</span>
-<span class="nc" id="L153">                    SetupGame.loadLevel(this, levelNum);</span>
+<span class="nc" id="L233">            Draw.drawBackground(this);</span>
+<span class="nc" id="L234">            Draw.drawTiles(this);</span>
+<span class="nc" id="L235">            GameLogic.evaluatePowerups(this);</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            for (int i = 0; i &lt; this.wizard.speed; i++) {</span>
+<span class="nc" id="L237">                GameLogic.wizardLogic(this);</span>
+<span class="nc" id="L238">                Draw.drawWizard(this);</span>
+            }
+<span class="nc" id="L240">            GameLogic.gremlinLogic(this);</span>
+<span class="nc" id="L241">            Draw.drawGremlins(this);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">            for (int i = 0; i &lt; MovingBall.SPEED; i++) {</span>
+<span class="nc" id="L243">                GameLogic.fireBallLogic(this);</span>
+<span class="nc" id="L244">                Draw.drawFireBalls(this);</span>
+<span class="nc" id="L245">                GameLogic.slimeBallLogic(this);</span>
+<span class="nc" id="L246">                Draw.drawSlimeBalls(this);</span>
+            }
+<span class="nc" id="L248">            Draw.drawTextField(this);</span>
+<span class="nc" id="L249">            Draw.drawManaBar(this);</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (GameLogic.checkWin(this)) {</span>
+<span class="nc" id="L251">                this.levelNum++;</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (this.levelNum &lt;= totalNumLevels)</span>
+<span class="nc" id="L253">                    SetupGame.loadLevel(this, levelNum);</span>
             }
         }
-<span class="nc" id="L156">    }</span>
+<span class="nc" id="L256">    }</span>
 
-
+    /**
+     * The main method of the program. Runs the program.
+     * @param args
+     */
     public static void main(String[] args) {
-<span class="nc" id="L160">        PApplet.main(&quot;gremlins.App&quot;);</span>
-<span class="nc" id="L161">    }</span>
+<span class="nc" id="L263">        PApplet.main(&quot;gremlins.App&quot;);</span>
+<span class="nc" id="L264">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

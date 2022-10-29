@@ -4,10 +4,22 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
 
-public class Text {
-    private final static int Y = 690;
+/**
+ * An interface used to display text onto the screen.
+ */
+public interface Text {
+    /**
+     * The starting point for text displayed on the bottom bar.
+     */
+    final static int Y = 690;
 
-    public static void drawLives(PApplet app, PImage wizardSprite, int currentLives) {
+    /**
+     * Draws the amount of lives left onto the bottom of left off the screen.
+     * @param app, the PApplet used to draw the text.
+     * @param wizardSprite, the sprite of the wizard.
+     * @param currentLives, the amount of lives left.
+     */
+    static void drawLives(PApplet app, PImage wizardSprite, int currentLives) {
         String output = "Lives: ";
         PFont mono;
         mono = app.createFont("Georgia", 20);
@@ -23,7 +35,14 @@ public class Text {
 
     }
 
-    public static void drawLevel(PApplet app, int currentLevel, int totalLevels) {
+
+    /**
+     * Draws the level number on the screen with the total number of levels.
+     * @param app, the PApplet used to draw the text.
+     * @param currentLevel, the current level number.
+     * @param totalLevels, the total number of levels.
+     */
+    static void drawLevel(PApplet app, int currentLevel, int totalLevels) {
         String output = String.format("Level %d/%d\n", currentLevel, totalLevels);
         PFont mono;
         mono = app.createFont("Georgia", 20);
@@ -33,7 +52,11 @@ public class Text {
     }
 
 
-    public static void drawVictoryMessage(PApplet app) {
+    /**
+     * Draws the victory message onto the screen prompting the user to press ENTER to start a new game.
+     * @param app, the PApplet used to draw the text.
+     */
+    static void drawVictoryMessage(PApplet app) {
         PFont mono;
         mono = app.createFont("Georgia", 55);
         app.textFont(mono);
@@ -47,8 +70,11 @@ public class Text {
         app.text("to play again", 185, 510);
     }
 
-
-    public static void drawGameOverMessage(PApplet app) {
+    /**
+     * Draws the game over message onto the screen prompting the user to press ENTER to start a new game.
+     * @param app, the PApplet used to draw the text.
+     */
+    static void drawGameOverMessage(PApplet app) {
         PFont mono;
         mono = app.createFont("Georgia", 55);
         app.textFont(mono);
@@ -63,7 +89,13 @@ public class Text {
     }
 
 
-    public static void drawManaBar(PApplet app, int rechargeTime, int currentRecharge) {
+    /**
+     * Draws the progress of the mana recharge for the wizards shoot fireball method.
+     * @param app, the PApplet used to draw the mana bar.
+     * @param rechargeTime, the time it takes to recharge the mana.
+     * @param currentRecharge, the current recharge time.
+     */
+    static void drawManaBar(PApplet app, int rechargeTime, int currentRecharge) {
         //White Bar
         app.fill(255, 255, 255);
         app.rect(570, Y - 15, 100, 10);
