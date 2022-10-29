@@ -8,41 +8,112 @@ import java.util.*;
 import java.io.*;
 
 public class App extends PApplet {
-    //Final Size Values
+    /**
+     * The width of the window
+     */
     protected static final int WIDTH = 720;
+    /**
+     * The height of the window
+     */
     protected static final int HEIGHT = 720;
+    /**
+     * Frames per second
+     */
     private static final int FPS = 60;
 
-    //Loaded data from the config file
+
+    /**
+     * Path to the config.json file
+     */
     private final String configPath;
+    /**
+     * For each level stores the level.txt file, the gremlin cooldown and the wizard cooldown
+     */
     Map<Integer, Map<String, String>> levelsMap;
 
-    /* FOR ALL LEVELS */
+
+    /**
+     * Total number of levels for the game
+     */
     protected int totalNumLevels;
+    /**
+     * Current level of the game
+     */
     protected int levelNum = 1;
-
-    /* FOR THE CURRENT LEVEL */
-    //Static
+    /**
+     * The current level text file
+     */
     protected String layoutFile;
+    /**
+     * A multi-dimensional string array that stores the layout of the current level.
+     * Every row represents a line read from the level text file.
+     * Every column represents a character in the line.
+     */
     protected String[][] tileLetterConfiguration;
+    /**
+     * Stores the locations for all game objects.
+     * The String is the name of the object.
+     * The ArrayList is a list of all the locations of the object.
+     */
     protected Map<String, List<Integer[]>> assetLocations;
+    /**
+     * The location of the exit door.
+     */
     protected int[] exitLocation;
+    /**
+     * The total time in frames for the Gremlins to be frozen when the frozen tile powerup is activated.
+     */
     protected final int totalTimeFrozen = 6 * 60;
-
-    //Dynamic
-    protected int lives;
+    /**
+     * The total number of lives in the game
+     */
     protected int TOTALLIVES;
+
+
+    /**
+     * The current number of lives in the game
+     */
+    protected int lives;
+    /**
+     * The Wizard object
+     */
     protected Wizard wizard;
+    /**
+     * The list of Gremlin objects
+     */
     protected List<Gremlin> gremlins;
+    /**
+     * The list of SlimeBall objects
+     */
     protected List<SlimeBall> slimeBalls;
+    /**
+     * The list of FireBall objects
+     */
     protected List<FireBall> fireBalls;
+    /**
+     * The list of Powerup objects
+     */
     protected List<PowerUpTile> powerupTiles;
+    /**
+     * The total amount of frames that the Gremlins have been frozen for
+     */
     protected int currentTimeFrozen = 0;
 
-    protected double wizardCooldown, enemyCooldown;
+    /**
+     * The fireball cooldown for the Wizard
+      */
+    protected double wizardCooldown;
+    /** The slimeball cooldown for all the Gremlins
+     */
+    protected double gremlinCooldown;
+    /**
+     * A 33x36 Tile array that stores tile objects for every 20x20 pixel tile in the game.
+     */
     protected TileGrid grid;
 
-
+    /**
+     * The Constructor of the app class, which initializes the configPath.
+     */
     public App() {
         this.configPath = "config.json";
     }
@@ -65,6 +136,9 @@ public class App extends PApplet {
         SetupGame.loadLevel(this, levelNum);
     }
 
+    /**
+     * Loads all the images from the resources folder into the ObjectMaker class.
+     */
     private void loadImages() {
         String[] imageNames = {"brickwall",  "brickwall_destroyed0", "brickwall_destroyed1", "brickwall_destroyed2",
                 "brickwall_destroyed3", "door", "fireball", "frozenwall", "gremlin", "powerup", "slime", "stonewall", 
