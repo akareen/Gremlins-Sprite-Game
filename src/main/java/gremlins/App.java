@@ -7,6 +7,9 @@ import processing.data.JSONArray;
 import java.util.*;
 import java.io.*;
 
+/**
+ * The main application class.
+ */
 public class App extends PApplet {
     /**
      * The width of the window
@@ -105,7 +108,7 @@ public class App extends PApplet {
     protected double wizardCooldown;
     /** The slimeball cooldown for all the Gremlins
      */
-    protected double gremlinCooldown;
+    protected double enemyCooldown;
     /**
      * A 33x36 Tile array that stores tile objects for every 20x20 pixel tile in the game.
      */
@@ -150,6 +153,9 @@ public class App extends PApplet {
                     .getPath().replace("%20", " ")));
     }
 
+    /**
+     * Reads the config.json file and stores the information in the levelsMap. Sets the total number of levels.
+     */
     private void readJSON() {
         JSONObject config = loadJSONObject(new File(this.configPath));
         this.TOTALLIVES = (int) config.get("lives");
@@ -205,6 +211,10 @@ public class App extends PApplet {
             }
     }
 
+    /**
+     * If there are no lives left or the total number of levels has been exceeded, the game is over.
+     * @return boolean true if the game is over, false otherwise
+     */
     private boolean gameOver() {
         return this.lives <= 0 || this.levelNum > this.totalNumLevels;
     }
@@ -229,7 +239,10 @@ public class App extends PApplet {
         }
     }
 
-
+    /**
+     * The main method of the program. Runs the program.
+     * @param args
+     */
     public static void main(String[] args) {
         PApplet.main("gremlins.App");
     }
