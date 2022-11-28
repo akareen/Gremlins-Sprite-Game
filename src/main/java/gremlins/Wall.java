@@ -24,11 +24,6 @@ public class Wall extends Tile {
     }
 
     /**
-     * Empty method of logic to be overwridden by subclasses.
-     */
-    public void tick() {}
-
-    /**
      * Draws the wall.
      * @param app, the PApplet used to draw the wall.
      */

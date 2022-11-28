@@ -39,8 +39,9 @@ public class DestroyedWall extends Tile {
      */
     public void tick() {
         this.spriteNumber++;
-        if (this.spriteNumber > 3)
+        if (this.spriteNumber > 3) {
             fullyDestroyed = true;
+        }
     }
 
     /**

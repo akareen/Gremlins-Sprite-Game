@@ -26,7 +26,7 @@ public class Gremlin extends Movable {
     /**
      * A boolean value representing if the gremlin is moving or not.
      */
-    private boolean moving = true;
+    protected boolean moving = true;
     /**
      * The speed of the gremlin.
      */
@@ -61,8 +61,9 @@ public class Gremlin extends Movable {
                 slimeBalls.add(ObjectMaker.makeSlimeBall(super.y, super.x, this.direction));
             frames++;
         }
-        if (contactFireballs(fireBalls))
+        if (contactFireballs(fireBalls)) {
             respawn(grid, wizard);
+        }
         if (moving) {
             if (super.y % 20 == 0 && super.x % 20 == 0) {
                 modifyMovement(grid);
@@ -84,8 +85,9 @@ public class Gremlin extends Movable {
      * @param grid, the grid of tiles.
      */
     private void modifyMovement(TileGrid grid) {
-        if (super.movingIntoWall(grid))
+        if (super.movingIntoWall(grid)) {
             super.direction = newDirection(grid);
+        }
     }
 
     /**
@@ -98,18 +100,16 @@ public class Gremlin extends Movable {
         int gridY = super.y / 20;
         int gridX = super.x / 20;
         List<Integer> validMoves = new ArrayList<>();
-        for (int i = 0; i < super.movementModifiers.length; i++) {
-            if (grid.withinRange(gridY + super.movementModifiers[i][0], gridX + super.movementModifiers[i][1])
-                && grid.getTile(gridY + super.movementModifiers[i][0], gridX + super.movementModifiers[i][1]).isEmpty())
+        for (int i = 0; i < movementModifiers.length; i++) {
+            if (grid.withinRange(gridY + movementModifiers[i][0], gridX + movementModifiers[i][1])
+                && grid.getTile(gridY + movementModifiers[i][0], gridX + movementModifiers[i][1]).isEmpty())
                     validMoves.add(i);
         }
-        if (validMoves.size() == 1)
-            return validMoves.get(0);
         if (validMoves.size() > 1) {
             validMoves.remove(Integer.valueOf(oppositeDirection()));
             return validMoves.get(new Random().nextInt(validMoves.size()));
         }
-        return super.direction;
+        return validMoves.get(0);
     }
 
     /**
@@ -119,11 +119,12 @@ public class Gremlin extends Movable {
      * @return true if the gremlin has been hit by a fireball, false otherwise.
      */
     private boolean contactFireballs(List<FireBall> fireBalls) {
-        for (FireBall fireBall : fireBalls)
+        for (FireBall fireBall : fireBalls) {
             if (GameLogic.hitboxOverlap(super.getCoords(), fireBall.getCoords())) {
                 fireBalls.remove(fireBall);
                 return true;
             }
+        }
         return false;
     }
 
@@ -152,9 +153,11 @@ public class Gremlin extends Movable {
     protected int oppositeDirection() {
         int[] dir = {0, 1, 2, 3};
         int[] opp = {1, 0, 3, 2};
-        for (int i = 0; i < dir.length; i++)
-            if (dir[i] == super.direction)
+        for (int i = 0; i < dir.length; i++) {
+            if (dir[i] == super.direction) {
                 return opp[i];
+            }
+        }
         return 0;
     }
 }

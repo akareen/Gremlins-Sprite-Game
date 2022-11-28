@@ -147,10 +147,11 @@ public class App extends PApplet {
                 "brickwall_destroyed3", "door", "fireball", "frozenwall", "gremlin", "powerup", "slime", "stonewall", 
                 "wizard0", "wizard1", "wizard2", "wizard3"
         };
-        for (String name : imageNames)
+        for (String name : imageNames) {
             ObjectMaker.addToImageMap(name, loadImage(Objects.requireNonNull(
                     this.getClass().getResource(name + ".png"))
                     .getPath().replace("%20", " ")));
+        }
     }
 
     /**
@@ -189,14 +190,16 @@ public class App extends PApplet {
         }
         int[] codes = {LEFT, RIGHT, UP, DOWN};
         int[] directions = {0, 1, 2, 3};
-        for (int i = 0; i < codes.length; i++)
+        for (int i = 0; i < codes.length; i++) {
             if (keyCode == codes[i]) {
                 wizard.setFutureMoving(true);
                 wizard.setFutureDirection(directions[i]);
                 break;
             }
-        if (keyCode == 32) //SPACE BAR
+        }
+        if (keyCode == 32) { //SPACE BAR
             wizard.initiateShoot();
+        }
     }
 
     /**
@@ -204,18 +207,19 @@ public class App extends PApplet {
      */
     public void keyReleased(){
         int[] codes = {LEFT, RIGHT, UP, DOWN};
-        for (int code : codes)
+        for (int code : codes) {
             if (keyCode == code) {
                 wizard.setFutureMoving(false);
                 break;
             }
+        }
     }
 
     /**
      * If there are no lives left or the total number of levels has been exceeded, the game is over.
      * @return boolean true if the game is over, false otherwise
      */
-    private boolean gameOver() {
+    protected boolean gameOver() {
         return this.lives <= 0 || this.levelNum > this.totalNumLevels;
     }
 
@@ -225,10 +229,12 @@ public class App extends PApplet {
      * Uses the logic methods from the GameLogic interface and uses the draw methods from the Draw interface.
      */
     public void draw() {
-        if (this.levelNum > totalNumLevels)
+        if (this.levelNum > totalNumLevels) {
             Draw.drawVictory(this);
-        else if (this.lives <= 0)
+        }
+        else if (this.lives <= 0) {
             Draw.drawGameOver(this);
+        }
         else {
             Draw.drawBackground(this);
             Draw.drawTiles(this);
@@ -249,8 +255,9 @@ public class App extends PApplet {
             Draw.drawManaBar(this);
             if (GameLogic.checkWin(this)) {
                 this.levelNum++;
-                if (this.levelNum <= totalNumLevels)
+                if (this.levelNum <= totalNumLevels) {
                     SetupGame.loadLevel(this, levelNum);
+                }
             }
         }
     }

@@ -19,9 +19,11 @@ public class TileGrid {
      */
     private Tile[][] makeTileGrid() {
         Tile[][] grid = new Tile[33][36];
-        for (int y = 0; y < grid.length; y++)
-            for (int x = 0; x < grid[y].length; x++)
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[y].length; x++) {
                 grid[y][x] = ObjectMaker.makeEmptyTile(y, x);
+            }
+        }
         return grid;
     }
 
@@ -44,10 +46,13 @@ public class TileGrid {
      */
     protected List<Integer[]> vacantPositionsAwayFromPlayer(int playerY, int playerX) {
         List<Integer[]> vacant = new ArrayList<>();
-        for (int y = 0; y < this.tileGrid.length; y++)
-            for (int x = 0; x < this.tileGrid[y].length; x++)
-                if (!withinTenSpaces(y, x, playerY, playerX) && tileGrid[y][x].isEmpty())
+        for (int y = 0; y < this.tileGrid.length; y++) {
+            for (int x = 0; x < this.tileGrid[y].length; x++) {
+                if (!withinTenSpaces(y, x, playerY, playerX) && tileGrid[y][x].isEmpty()) {
                     vacant.add(new Integer[] {y, x});
+                }
+            }
+        }
         return vacant;
     }
 

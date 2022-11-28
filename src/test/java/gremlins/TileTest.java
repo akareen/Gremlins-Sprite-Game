@@ -1,7 +1,6 @@
 package gremlins;
 
 import org.junit.jupiter.api.Test;
-import processing.core.PApplet;
 
 import static org.junit.jupiter.api.Assertions.*;
 

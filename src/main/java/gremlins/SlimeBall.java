@@ -32,9 +32,9 @@ public class SlimeBall extends MovingBall {
      * @return true if the slimeball is moving into a wall, false otherwise.
      */
     public boolean tick(TileGrid grid) {
-        if (super.y % 20 == 0 && super.x % 20 == 0)
-            if (super.movingIntoWall(grid))
-                return true;
+        if (super.y % 20 == 0 && super.x % 20 == 0 && super.movingIntoWall(grid)) {
+            return true;
+        }
         changePosition();
         return false;
     }
@@ -45,17 +45,5 @@ public class SlimeBall extends MovingBall {
      */
     public void draw(PApplet app) {
         app.image(this.sprite, super.x, super.y);
-    }
-
-    /**
-     * Checks if two SlimeBalls are the same. Used for testing.
-     * @param o, the object to be compared to.
-     * @return true if the two objects are the same, false otherwise.
-     */
-    @Override
-    public boolean equals(MovingBall o) {
-        if (!(o instanceof SlimeBall))
-            return false;
-        return o.y == this.y && o.x == this.x && o.direction == this.direction;
     }
 }

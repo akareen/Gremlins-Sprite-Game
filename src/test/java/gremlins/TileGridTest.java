@@ -16,9 +16,11 @@ public class TileGridTest {
 
     @Test
     public void respawnLocationTest() {
-        for (int y = 0; y < 33; y++)
-            for (int x = 0; x < 36; x++)
+        for (int y = 0; y < 33; y++) {
+            for (int x = 0; x < 36; x++) {
                 grid.setTile(y, x, ObjectMaker.makeStonewall(y, x));
+            }
+        }
         grid.setTile(20, 20, ObjectMaker.makeEmptyTile(20, 20));
         Integer[] location = grid.respawnLocation(10, 10);
         assertEquals(location[0], 20);

@@ -68,16 +68,19 @@ public interface SetupGame {
         String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Powerup", "Frozenwall"};
         String[] codes = {"W", "B", "X", "G", "E", "P", "F"};
         app.grid = new TileGrid();
-        for (int y = 0; y < app.tileLetterConfiguration.length; y++)
+        for (int y = 0; y < app.tileLetterConfiguration.length; y++) {
             for (int x = 0; x < app.tileLetterConfiguration[y].length; x++) {
-                for (int i = 0; i < codes.length; i++)
+                for (int i = 0; i < codes.length; i++) {
                     if (app.tileLetterConfiguration[y][x].equals(codes[i])) {
-                        if (app.tileLetterConfiguration[y][x].equals("E"))
+                        if (app.tileLetterConfiguration[y][x].equals("E")) {
                             app.exitLocation = new int[] {y, x};
+                        }
                         app.assetLocations.get(ls[i]).add(new Integer[] {y, x});
                         break;
                     }
+                }
             }
+        }
     }
 
     /**
@@ -90,8 +93,9 @@ public interface SetupGame {
     static Map<String, List<Integer[]>> makeDefaultAssetLocations() {
         String[] ls = {"Wizard", "Brickwall", "Stonewall", "Gremlin", "Door", "Empty", "Powerup", "Frozenwall"};
         Map<String, List<Integer[]>> map = new HashMap<>();
-        for (String s : ls)
+        for (String s : ls) {
             map.put(s, new ArrayList<>());
+        }
         return map;
     }
 
@@ -108,21 +112,25 @@ public interface SetupGame {
         app.wizard = ObjectMaker.makeWizard(wizardLocation[0] * 20, wizardLocation[1] * 20, app.wizardCooldown);
         //Make Gremlins
         app.gremlins = new ArrayList<>();
-        for (Integer[] gremlinLocation : app.assetLocations.get("Gremlin"))
+        for (Integer[] gremlinLocation : app.assetLocations.get("Gremlin")) {
             app.gremlins.add(ObjectMaker.makeGremlin(
                     gremlinLocation[0] * 20, gremlinLocation[1] * 20, app.enemyCooldown));
+        }
         // Make Brickwalls
-        for (Integer[] brickwallLocation : app.assetLocations.get("Brickwall"))
+        for (Integer[] brickwallLocation : app.assetLocations.get("Brickwall")) {
             app.grid.setTile(brickwallLocation[0], brickwallLocation[1],
                     ObjectMaker.makeBrickwall(brickwallLocation[0] * 20, brickwallLocation[1] * 20));
+        }
         // Make Stonewalls
-        for (Integer[] stonewallLocation : app.assetLocations.get("Stonewall"))
+        for (Integer[] stonewallLocation : app.assetLocations.get("Stonewall")) {
             app.grid.setTile(stonewallLocation[0], stonewallLocation[1],
                     ObjectMaker.makeStonewall(stonewallLocation[0] * 20, stonewallLocation[1] * 20));
+        }
         // Make Frozenwalls
-        for (Integer[] frozenwallLocation : app.assetLocations.get("Frozenwall"))
+        for (Integer[] frozenwallLocation : app.assetLocations.get("Frozenwall")) {
             app.grid.setTile(frozenwallLocation[0], frozenwallLocation[1],
                     ObjectMaker.makeFrozenwall(frozenwallLocation[0] * 20, frozenwallLocation[1] * 20));
+        }
         // Make Door
         Integer[] doorLocation = app.assetLocations.get("Door").get(0);
         app.grid.setTile(doorLocation[0], doorLocation[1],
@@ -130,7 +138,8 @@ public interface SetupGame {
         // Make Powerups
         app.powerupTiles = new ArrayList<>();
         for (Integer[] powerupLocation : app.assetLocations.get("Powerup")) {
-            PowerUpTile powerupTile = ObjectMaker.makePowerUpTile(powerupLocation[0] * 20, powerupLocation[1] * 20);
+            PowerUpTile powerupTile = ObjectMaker.makePowerUpTile(
+                powerupLocation[0] * 20, powerupLocation[1] * 20);
             app.grid.setTile(powerupLocation[0], powerupLocation[1], powerupTile);
             app.powerupTiles.add(powerupTile);
         }

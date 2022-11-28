@@ -55,10 +55,12 @@ public class PowerUpTile extends Tile {
      * once there is a collision between the wizard and the power up.
      */
     public void tick() {
-        if (super.isEmpty())
+        if (super.isEmpty()) {
             notSpawnedMethod();
-        if (this.powerupActive)
+        }
+        if (this.powerupActive) {
             activeMethod();
+        }
     }
 
     /**
@@ -66,8 +68,9 @@ public class PowerUpTile extends Tile {
      * @param app, the main application class.
      */
     public void draw(PApplet app) {
-        if (!super.isEmpty())
+        if (!super.isEmpty()) {
             app.image(sprite, super.getX(), super.getY());
+        }
     }
 
     /**

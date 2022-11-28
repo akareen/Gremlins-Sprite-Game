@@ -18,11 +18,4 @@ public abstract class MovingBall extends Movable {
     public MovingBall(int y, int x, int direction) {
         super(y, x, direction);
     }
-
-    /**
-     * An abstract method that checks if two MovingBalls are the same. Used for testing.
-     * @param o, the object to be compared to.
-     * @return true if the two objects are the same, false otherwise.
-     */
-    public abstract boolean equals(MovingBall o);
 }

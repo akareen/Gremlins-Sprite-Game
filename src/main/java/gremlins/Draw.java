@@ -1,8 +1,5 @@
 package gremlins;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The draw interface used by the main application.
  * The methods take in the main application as a parameter and perform draw operations.
@@ -50,13 +47,16 @@ public interface Draw {
                 tile.tick();
                 if (!(tile.isEmpty())
                         && tile.getName().equals("destroyed-wall")) {
-                    if (tile.isFullyDestroyed())
+                    if (tile.isFullyDestroyed()) {
                         app.grid.setTile(y, x, new EmptyTile(y, x, "empty"));
-                    else
+                    }
+                    else {
                         tile.draw(app);
+                    }
                 }
-                else if (!tile.isEmpty())
+                else if (!tile.isEmpty()) {
                     tile.draw(app);
+                }
             }
         }
     }
@@ -74,8 +74,9 @@ public interface Draw {
      * @param app, the main application
      */
     static void drawGremlins(App app) {
-        for (Gremlin gremlin : app.gremlins)
+        for (Gremlin gremlin : app.gremlins) {
             gremlin.draw(app);
+        }
     }
 
     /**
@@ -83,8 +84,9 @@ public interface Draw {
      * @param app, the main application
      */
     static void drawSlimeBalls(App app) {
-        for (SlimeBall slimeBall : app.slimeBalls)
+        for (SlimeBall slimeBall : app.slimeBalls) {
             slimeBall.draw(app);
+        }
     }
 
     /**
@@ -92,8 +94,9 @@ public interface Draw {
      * @param app, the main application
      */
     static void drawFireBalls(App app) {
-        for (FireBall fireBall : app.fireBalls)
+        for (FireBall fireBall : app.fireBalls) {
             fireBall.draw(app);
+        }
     }
 
     /**
@@ -110,22 +113,9 @@ public interface Draw {
      * @param app, the main application
      */
     static void drawManaBar(App app) {
-        if (app.wizard.isOnCooldown())
-            Text.drawManaBar(app, app.wizard.getCooldownFrames(), app.wizard.getTimeInCooldown());
-    }
-
-    /**
-     * Uses all the draw methods to draw the game.
-     * @param app, the main application.
-     */
-    static void drawGame(App app) {
-        drawBackground(app);
-        drawTiles(app);
-        drawWizard(app);
-        drawGremlins(app);
-        drawSlimeBalls(app);
-        drawFireBalls(app);
-        drawTextField(app);
-        drawManaBar(app);
+        if (app.wizard.isOnCooldown()) {
+            Text.drawManaBar(app, app.wizard.getCooldownFrames(), 
+            app.wizard.getTimeInCooldown());
+        }
     }
 }

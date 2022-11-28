@@ -51,8 +51,9 @@ public interface GameLogic {
      * @param app, the main application.
      */
     static void gremlinLogic(App app) {
-        if (app.currentTimeFrozen >= app.totalTimeFrozen)
+        if (app.currentTimeFrozen >= app.totalTimeFrozen) {
             unFreezeGremlins(app);
+        }
 
         for (Gremlin gremlin : app.gremlins) {
             gremlin.tick(app.grid, app.slimeBalls, app.fireBalls, app.wizard);
@@ -62,8 +63,9 @@ public interface GameLogic {
                 break;
             }
         }
-        if (app.currentTimeFrozen >= 1)
+        if (app.currentTimeFrozen >= 1) {
             app.currentTimeFrozen++;
+        }
     }
 
     /**
@@ -76,13 +78,15 @@ public interface GameLogic {
     static boolean fireSlimeCollision(SlimeBall slime, App app) {
         boolean collision = false;
         List<FireBall> toRemove = new ArrayList<>();
-        for (FireBall fireBall : app.fireBalls)
+        for (FireBall fireBall : app.fireBalls) {
             if (hitboxOverlap(fireBall.getCoords(), slime.getCoords())) {
                 toRemove.add(fireBall);
                 collision = true;
             }
-        for (FireBall fireBall : toRemove)
+        }
+        for (FireBall fireBall : toRemove) {
             app.fireBalls.remove(fireBall);
+        }
         return collision;
     }
 
@@ -95,8 +99,9 @@ public interface GameLogic {
     static void slimeBallLogic(App app) {
         List<SlimeBall> toRemove = new ArrayList<>();
         for (SlimeBall slimeBall : app.slimeBalls) {
-            if (fireSlimeCollision(slimeBall, app))
+            if (fireSlimeCollision(slimeBall, app)) {
                 toRemove.add(slimeBall);
+            }
             if (slimeBall.tick(app.grid)) {
                 toRemove.add(slimeBall);
                 break;
@@ -107,8 +112,9 @@ public interface GameLogic {
                 return;
             }
         }
-        for (SlimeBall item : toRemove)
+        for (SlimeBall item : toRemove) {
             app.slimeBalls.remove(item);
+        }
     }
 
     /**
@@ -120,15 +126,17 @@ public interface GameLogic {
         List<FireBall> toRemove = new ArrayList<>();
         for (FireBall fireBall : app.fireBalls) {
             int tickVal = fireBall.tick(app.grid);
-            if (tickVal == 2)
+            if (tickVal == 2) {
                 freezeGremlins(app);
+            }
             if (tickVal != 0) {
                 toRemove.add(fireBall);
                 break;
             }
         }
-        for (FireBall item : toRemove)
+        for (FireBall item : toRemove) {
             app.fireBalls.remove(item);
+        }
     }
 
     /**
@@ -137,8 +145,9 @@ public interface GameLogic {
      */
     static void unFreezeGremlins(App app) {
         app.currentTimeFrozen = 0;
-        for (Gremlin gremlin : app.gremlins)
+        for (Gremlin gremlin : app.gremlins) {
             gremlin.setMoving(true);
+        }
     }
 
     /**
@@ -147,8 +156,9 @@ public interface GameLogic {
      */
     static void freezeGremlins(App app) {
         app.currentTimeFrozen = 1;
-        for (Gremlin gremlin : app.gremlins)
+        for (Gremlin gremlin : app.gremlins) {
             gremlin.setMoving(false);
+        }
     }
 
     /**

@@ -36,8 +36,9 @@ public class FireBall extends MovingBall {
     public int tick(TileGrid grid) {
         if (super.y % 20 == 0 && super.x % 20 == 0) {
             int tickVal = evaluateMovement(grid);
-            if (tickVal != 0)
+            if (tickVal != 0) {
                 return tickVal;
+            }
         }
         changePosition();
         return 0;
@@ -59,10 +60,12 @@ public class FireBall extends MovingBall {
      * 2 if the fireball has hit a frozen wall.
      */
     protected int evaluateMovement(TileGrid grid) {
-        if (isMovingIntoFrozenWall(grid))
+        if (isMovingIntoFrozenWall(grid)) {
             return 2;
-        if (isMovingIntoBrickWall(grid) || isMovingIntoStoneWall(grid))
+        }
+        if (isMovingIntoBrickWall(grid) || isMovingIntoStoneWall(grid)) {
             return 1;
+        }
         return 0;
     }
 
@@ -110,7 +113,7 @@ public class FireBall extends MovingBall {
      * @return an integer representing the y coordinate of the fireball in grid tiles.
      */
     protected int getYPos() {
-        return (super.y / 20) + super.movementModifiers[super.direction][0];
+        return (super.y / 20) + movementModifiers[super.direction][0];
     }
 
     /**
@@ -118,13 +121,6 @@ public class FireBall extends MovingBall {
      * @return an integer representing the x coordinate of the fireball in grid tiles.
      */
     protected int getXPos() {
-        return (super.x / 20) + super.movementModifiers[super.direction][1];
-    }
-
-    @Override
-    public boolean equals(MovingBall o) {
-        if (!(o instanceof FireBall))
-            return false;
-        return o.y == this.y && o.x == this.x && o.direction == this.direction;
+        return (super.x / 20) + movementModifiers[super.direction][1];
     }
 }

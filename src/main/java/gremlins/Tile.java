@@ -5,7 +5,7 @@ import processing.core.PApplet;
 /**
  * A class representing a 20x20 tile in the game.
  */
-public class Tile extends GameObject {
+public abstract class Tile extends GameObject {
     /**
      * The name of the tile.
      */
@@ -13,7 +13,7 @@ public class Tile extends GameObject {
     /**
      * Whether the tile is empty or not.
      */
-    private boolean empty = false;
+    protected boolean empty = false;
 
     /**
      * Constructor for the Tile class.
@@ -68,19 +68,5 @@ public class Tile extends GameObject {
      */
     public void setEmpty(boolean empty) {
         this.empty = empty;
-    }
-
-    /**
-     * Checks if two Tiles are the same. Used for testing.
-     * @param o, the object to be compared to.
-     * @return true if the two objects are the same, false otherwise.
-     */
-    public boolean equals(Object o) {
-        if (!(o instanceof Tile))
-            return false;
-        Tile tile = (Tile) o;
-        return tile.name.equals(this.name)
-                && tile.y == this.y
-                && tile.x == this.x;
     }
 }

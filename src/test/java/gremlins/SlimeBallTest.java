@@ -82,9 +82,4 @@ public class SlimeBallTest {
         assertFalse(slimeBall.movingIntoWall(grid));
     }
 
-    @Test
-    public void speedTest() {
-        assertEquals(slimeBall.getSPEED(), 4);
-    }
-
 }

@@ -20,7 +20,7 @@ public class Wizard extends Movable {
     /**
      * A boolean value representing if the wizard is moving or not.
      */
-    private boolean moving = false;
+    protected boolean moving = false;
     /**
      * The value to set the wizard's moving variable to when the wizard has been evaluated.
      */
@@ -73,11 +73,13 @@ public class Wizard extends Movable {
             this.moving = futureMoving;
             super.direction = futureDirection;
             //LOGIC
-            if (moving && super.movingIntoWall(grid))
+            if (moving && super.movingIntoWall(grid)) {
                 moving = false;
+            }
         }
-        if (moving)
+        if (moving) {
             super.changePosition();
+        }
     }
 
     /**
