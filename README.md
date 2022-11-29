@@ -3,6 +3,7 @@
 <img title="Title" src="docs/images/gremlins_gif.gif?raw=true" alt="Alt text" width="325" data-align="center">
 
 *received perfect marks*
+use *gradle run* to run the program using Java 8.
 
 The map is a 33x36 grid of tiles (all tiles are 20x20 pixels).
 
