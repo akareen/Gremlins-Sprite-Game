@@ -24,10 +24,8 @@ The level files contain a grid of text characters representing what should be in
 
 - Spaces are empty space
 
-
-
-The config file is used to load the game and set cooldowns 
-<img title="Title" src="docs/images/config_file_image.png?raw=true" alt="Alt text" width="236" data-align="inline">
+- The config file is used to load the game and set cooldowns 
+  <img title="Title" src="docs/images/config_file_image.png?raw=true" alt="Alt text" width="236" data-align="left">
 
 
 
