@@ -2,9 +2,25 @@
 
 <img title="Title" src="docs/images/gremlins_gif.gif?raw=true" alt="Alt text" width="325" data-align="center">
 
-*received perfect marks*
+<u>*received perfect marks (although the code is not perfect due to time constraints)*</u>
 
-use *gradle run* to run the program using Java 8.
+Requires Java 8 and Gradle to run
+
+Build instructions:
+
+```
+gradle build
+```
+
+Run instructions:
+
+```
+gradle run
+```
+
+
+
+### Game Information
 
 The map is a 33x36 grid of tiles (all tiles are 20x20 pixels).
 
@@ -30,9 +46,13 @@ The level files contain a grid of text characters representing what should be in
 
 
 
-**Wizard**
+Images of the game objects in <u>src\main\resources\gremlins</u>
 
-The player is controlled with the arrow keys.
+#### 
+
+#### Wizard
+
+The player is controlled with the arrow keys. (UP, DOWN, LEFT, RIGHT)
 
 The wizard shoots fireballs by pressing the space bar, they travel in the direction that the wizard is currently facing until they hit an object.
 
@@ -42,7 +62,7 @@ When the fireball hits a gremlin it respawns in an empty area in the map at leas
 
 
 
-**Gremlins**
+#### Gremlins
 
 Each gremlin shoots slime projectiles in the direction of their current movement.
 
@@ -52,7 +72,7 @@ If the slime hits a fireball both the slimeball and the fireball are vapourised.
 
 
 
-**Powerup**
+#### Powerup
 
 The powerup symbolised by the lightning causes the players movement to speed up for a fixed portion of time.
 
@@ -60,7 +80,7 @@ The frozen wall once destroyed by a fireball causes all gremlins to freeze in pl
 
 
 
-**Collision**
+#### Collision
 
 Collision is handled with simple code below (BLOCK_MODIFIER = 19)
 
@@ -75,10 +95,30 @@ static boolean _hitboxOverlap(int[] coordinate1, int[] coordinate2) {
 
 
 
-**Win and Lose conditions**
+#### Win and Lose conditions
 
 The current level is completed when the player reaches the exit. A new level will then begin.
 
 If there are no more levels the player wins.
 
 If the player loses all their lives the player has lost.
+
+
+
+#### UML Visualisation
+
+![Alt text](docs/images/Movable.png?raw=true "Title")
+
+*The Movable object class hierachy*
+
+
+
+![Alt text](docs/images/Tile.png?raw=true "Title")
+
+*The Tile object class hierachy*
+
+
+
+##### Acknowledgements:
+
+The images used in this game were created by the INFO1113 staff at the University of Sydney. The unit coordinator for that unit is Dr. Polash. All the code, logic and gameplay is my own.
