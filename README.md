@@ -1,6 +1,8 @@
+# **USYD INFO1113 Gremlins Maze Game**
 
+<img title="Title" src="docs/images/gremlins_gif.gif?raw=true" alt="Alt text" width="325" data-align="center">
 
-<img title="Title" src="docs/images/main_game_image.png?raw=true" alt="Alt text" width="325" data-align="inline">
+*received perfect marks*
 
 The map is a 33x36 grid of tiles (all tiles are 20x20 pixels).
 
@@ -8,22 +10,28 @@ The bottom bar is used to display the number of lives, spell cooldown, current l
 
 The level files contain a grid of text characters representing what should be in the cell.
 
-- X = stone walls
+- X = Stone walls
 
-- B = brick walls
+- B = Brick walls
 
-- P = powerup
+- P = Powerup
 
-- F = frozen wall powerup
+- F = Frozen wall powerup
+
+- G = where the gremlin is placed
+
+- W = where the player starts from
 
 - Spaces are empty space
 
-- G is where the gremlin is placed
 
-- W is where the player starts from
 
 The config file is used to load the game and set cooldowns 
-<img title="Title" src="docs/images/config_file_image.png?raw=true" alt="Alt text" width="236" data-align="left">**Wizard**
+<img title="Title" src="docs/images/config_file_image.png?raw=true" alt="Alt text" width="236" data-align="inline">
+
+
+
+**Wizard**
 
 The player is controlled with the arrow keys.
 
@@ -55,7 +63,7 @@ The frozen wall once destroyed by a fireball causes all gremlins to freeze in pl
 
 **Collision**
 
-Collision is handled with simple code below
+Collision is handled with simple code below (BLOCK_MODIFIER = 19)
 
 ```Java
 static boolean _hitboxOverlap(int[] coordinate1, int[] coordinate2) {  
@@ -75,5 +83,3 @@ The current level is completed when the player reaches the exit. A new level wil
 If there are no more levels the player wins.
 
 If the player loses all their lives the player has lost.
-
-
